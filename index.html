@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>رحلات مُطابق</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --sa-50:#F0FBF4; --sa-100:#E6F7EC; --sa-200:#C3ECD2; --sa-300:#91DDB0;
+    --sa-500:#25935F; --sa-600:#1B8354; --sa-700:#15613D; --sa-800:#114D31;
+    --sa-900:#0D3D26; --sa-950:#092A1E;
+    --g-50:#F9FAFB; --g-100:#F3F4F6; --g-200:#E5E7EB; --g-300:#D2D6DB;
+    --g-500:#6C737F; --g-600:#4D5761; --g-700:#384250; --g-800:#1F2A37;
+    --g-900:#111927; --g-950:#0D121C; --white:#FFFFFF;
+    --warn:#F79009; --crit:#D92D20;
+    --font:'IBM Plex Sans Arabic',-apple-system,'Segoe UI',Tahoma,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{direction:rtl}
+  body{font-family:var(--font); background:var(--g-950); color:var(--g-900); overflow:hidden; -webkit-font-smoothing:antialiased}
+  main.deck{position:fixed; inset:0}
+  section.slide{
+    position:absolute; inset:0; height:100vh; height:100dvh; overflow:hidden;
+    background:var(--white); display:flex; flex-direction:column;
+    padding:clamp(1.3rem,4vh,2.8rem) clamp(1.4rem,5vw,4.4rem);
+    opacity:0; visibility:hidden; transform:translateX(-1.5vw);
+    transition:opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
+  }
+  section.slide.active{opacity:1; visibility:visible; transform:none; transition-delay:0s}
+  section.slide.dark{background:var(--sa-950); color:var(--white)}
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease,transform .5s ease}
+  .active .reveal{opacity:1; transform:none}
+  .active .reveal:nth-child(1){transition-delay:.05s}.active .reveal:nth-child(2){transition-delay:.13s}
+  .active .reveal:nth-child(3){transition-delay:.21s}.active .reveal:nth-child(4){transition-delay:.29s}
+  .active .reveal:nth-child(5){transition-delay:.37s}.active .reveal:nth-child(6){transition-delay:.45s}
+  @media (prefers-reduced-motion:reduce){section.slide,.reveal{transition:none !important; transform:none !important}}
+
+  .kicker{font-size:clamp(.66rem,1.5vh,.82rem); font-weight:700; color:var(--sa-700); letter-spacing:.14em}
+  .dark .kicker{color:var(--sa-300)}
+  h1.title{font-size:clamp(1.35rem,4.2vh,2.25rem); font-weight:700; color:var(--g-950); line-height:1.25; text-wrap:balance; margin-top:.3rem}
+  .accent{width:4.2rem; height:4px; background:var(--sa-600); border-radius:2px; margin-top:clamp(.45rem,1.4vh,.8rem)}
+  .lead{font-size:clamp(.82rem,1.95vh,1.02rem); color:var(--g-600); margin-top:clamp(.45rem,1.4vh,.8rem); max-width:74ch; line-height:1.7}
+  .grow{flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* شريط الفصول */
+  .rail{display:flex; gap:.5rem; margin-top:clamp(.5rem,1.6vh,.9rem)}
+  .rail .seg{flex:1; display:flex; align-items:center; gap:.5rem; border-radius:99px; border:1px solid var(--g-200); background:var(--g-50); padding:.3rem .8rem; color:var(--g-500); font-size:clamp(.6rem,1.5vh,.78rem); font-weight:600}
+  .rail .seg .dot{inline-size:1.25rem; block-size:1.25rem; border-radius:50%; background:var(--g-200); color:var(--g-600); display:grid; place-items:center; font-weight:700; font-size:.68rem; flex:none}
+  .rail .seg.done{border-color:var(--sa-200); color:var(--sa-700)}
+  .rail .seg.done .dot{background:var(--sa-100); color:var(--sa-700)}
+  .rail .seg.active{background:var(--sa-600); border-color:var(--sa-600); color:var(--white)}
+  .rail .seg.active .dot{background:var(--white); color:var(--sa-700)}
+  [data-go]{cursor:pointer}
+  .rail .seg[data-go]:hover{border-color:var(--sa-500)}
+  .card[data-go]:hover{border-color:var(--sa-500); box-shadow:0 2px 8px rgb(13 61 38 / .1)}
+  .corechip{background:var(--sa-800); color:var(--sa-100); border:1px solid var(--sa-700); border-radius:8px; padding:.4rem .7rem; font-size:clamp(.6rem,1.55vh,.82rem); font-weight:600; text-align:center}
+  .who{margin-top:clamp(.45rem,1.4vh,.7rem); padding-top:clamp(.4rem,1.2vh,.6rem); border-top:1px dashed var(--g-300); font-size:clamp(.6rem,1.5vh,.8rem); color:var(--g-600); font-weight:600; line-height:1.55}
+  .who b{color:var(--g-800); font-weight:700}
+  /* لقطات حية من المنصة */
+  .shotframe{border:1px solid var(--g-200); border-radius:14px; overflow:hidden; background:#fff; box-shadow:0 14px 38px rgba(13,61,38,.12); margin-inline:auto; inline-size:100%}
+  .shotbar{display:flex; align-items:center; gap:.4rem; padding:.45rem .8rem; background:var(--g-100); border-bottom:1px solid var(--g-200)}
+  .shotbar .sdot{inline-size:.55rem; block-size:.55rem; border-radius:50%}
+  .sdot.r{background:#e8695a}.sdot.y{background:#e5b95c}.sdot.g{background:#65c466}
+  .shotbar .addr{margin-inline-start:auto; background:#fff; border:1px solid var(--g-200); border-radius:999px; padding:.1rem .7rem; font-size:clamp(.55rem,1.35vh,.72rem); color:var(--g-500); font-weight:600}
+  .shotframe img{display:block; inline-size:100%; block-size:auto}
+  .shotnotes{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center}
+  .shotchip{background:var(--sa-50); border:1px solid var(--sa-200); color:var(--sa-900); border-radius:999px; padding:.35rem .85rem; font-size:clamp(.6rem,1.55vh,.82rem); font-weight:600}
+  .shotchip b{color:var(--sa-800)}
+  .shothush{text-align:center; color:var(--g-500); font-size:clamp(.58rem,1.45vh,.78rem); font-weight:600; margin:0}
+  /* زر العودة إلى البداية — ثابت على يمين الشاشة (اتجاه مادي مقصود بطلب المالكة) */
+  #homeBtn{position:fixed; bottom:clamp(2.9rem,6.5vh,3.9rem); right:clamp(.6rem,1.5vw,1.2rem); inline-size:2.7rem; block-size:2.7rem; border-radius:50%; background:#fff; border:1.5px solid var(--sa-600); color:var(--sa-700); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:60; box-shadow:0 6px 18px rgba(13,61,38,.14); opacity:.5; padding:0; transition:opacity .2s ease, transform .2s ease, background .2s ease}
+  #homeBtn:hover{opacity:1; transform:scale(1.1); background:var(--sa-50)}
+  #homeBtn svg{inline-size:1.15rem; block-size:1.15rem}
+  body.on-first #homeBtn, body.drawer-open #homeBtn{opacity:0; pointer-events:none}
+  body.on-dark #homeBtn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); color:#fff}
+  body.on-last #homeBtn{opacity:1; animation:homepulse 2.2s ease infinite}
+  @keyframes homepulse{0%,100%{box-shadow:0 6px 18px rgba(13,61,38,.14)}50%{box-shadow:0 0 0 12px rgba(27,131,84,.18)}}
+
+  /* ═══ الستوري بورد: شاشات تخطيطية مصغّرة ═══ */
+  .strip{display:flex; align-items:stretch; gap:clamp(.35rem,.8vw,.7rem); margin-top:clamp(.7rem,2.2vh,1.2rem)}
+  .frame{flex:1; min-width:0; display:flex; flex-direction:column}
+  .jarr{flex:0 0 clamp(.5rem,1vw,.9rem); display:grid; place-items:center; padding-top:12%}
+  .jarr svg{inline-size:.55em; block-size:.55em; color:var(--g-500)}
+
+  .vg{aspect-ratio:16/10.5; background:var(--white); border:1px solid var(--g-200); border-radius:9px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 3px rgb(13 61 38 / .07)}
+  .vg .tb{flex:0 0 15%; background:var(--g-100); border-bottom:1px solid var(--g-200); display:flex; align-items:center; gap:3px; padding-inline:7px}
+  .vg .tb i{inline-size:4px; block-size:4px; border-radius:50%; background:var(--g-300)}
+  .vg .bd{flex:1; padding:7%; display:flex; flex-direction:column; gap:7%; min-height:0; position:relative}
+
+  .ln{height:5.5%; min-height:3px; border-radius:99px; background:var(--g-200); flex:none}
+  .ln.g{background:var(--sa-300)} .ln.gd{background:var(--sa-600)} .ln.lt{background:var(--g-100)}
+  .vrow{display:flex; gap:5%; align-items:center; flex:none}
+  .vdot{inline-size:6px; block-size:6px; border-radius:50%; flex:none}
+  .d-r{background:var(--crit)} .d-o{background:var(--warn)} .d-g{background:var(--sa-500)}
+  .vgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:6%; flex:1; min-height:0}
+  .cell{background:var(--g-100); border-radius:4px}
+  .cell.g{background:var(--sa-100); box-shadow:inset 0 0 0 1px var(--sa-300)}
+  .pbar{height:8%; min-height:4px; background:var(--g-100); border-radius:99px; overflow:hidden; display:flex}
+  .pbar i{background:var(--sa-500); border-radius:99px}
+  .stage{flex:1; background:var(--g-100); border-radius:5px; position:relative; min-height:0}
+  .mark{position:absolute; border:2px solid var(--sa-500); background:var(--sa-50); border-radius:4px; opacity:.95}
+  .vcheck{inline-size:15px; block-size:15px; border-radius:50%; background:var(--sa-600); color:var(--white); display:grid; place-items:center; font-size:9px; font-weight:700; flex:none}
+  .kan{display:grid; grid-template-columns:repeat(3,1fr); gap:6%; flex:1; min-height:0}
+  .kcol{background:var(--g-50); border:1px solid var(--g-200); border-radius:4px; padding:7%; display:flex; flex-direction:column; gap:9%}
+  .kcard{flex:0 0 16%; min-height:4px; background:var(--white); border:1px solid var(--g-200); border-radius:3px}
+  .kcard.g{background:var(--sa-100); border-color:var(--sa-300)}
+  .cbars{display:flex; align-items:flex-end; gap:7%; flex:1; min-height:0; padding-inline:4%}
+  .cb{flex:1; background:var(--g-200); border-radius:3px 3px 0 0}
+  .cb.g{background:var(--sa-500)}
+  .art{flex:1; background:var(--g-50); border:1.5px dashed var(--g-300); border-radius:5px; padding:8%; display:flex; flex-direction:column; gap:9%; min-height:0; position:relative}
+  .shp{background:var(--g-200); border-radius:4px}
+  .vsplit{display:grid; grid-template-columns:1.35fr 1fr; gap:6%; flex:1; min-height:0}
+  .panel{background:var(--white); border:1px solid var(--g-200); border-radius:5px; padding:7%; display:flex; flex-direction:column; gap:10%}
+  .code{background:var(--g-900); border-radius:5px; padding:9%; display:flex; flex-direction:column; gap:11%}
+  .code .ln{background:var(--g-600)} .code .ln.g{background:var(--sa-300)}
+  .stepr{display:flex; gap:5%; align-items:center; flex:none}
+  .stpill{flex:1; height:100%; min-height:8px; border-radius:99px; background:var(--g-100); border:1px solid var(--g-200)}
+  .stpill.g{background:var(--sa-100); border-color:var(--sa-300)}
+  .stpill.gd{background:var(--sa-600); border-color:var(--sa-600)}
+  .field{flex:0 0 20%; min-height:10px; border:1.5px solid var(--g-300); border-radius:99px; display:flex; align-items:center; padding-inline:6%}
+  .btnv{flex:0 0 18%; min-height:9px; width:38%; background:var(--sa-600); border-radius:99px}
+  .doc{flex:1; background:var(--white); border:1px solid var(--g-200); border-radius:5px; padding:9%; display:flex; flex-direction:column; gap:10%; min-height:0}
+  .scan{position:absolute; inset-inline:6%; top:52%; height:3px; border-radius:99px; background:linear-gradient(to left, transparent, var(--sa-500) 60%, var(--sa-600))}
+
+  /* ── البريف: معادلة التحويل ── */
+  .eq{display:grid; grid-template-columns:1.05fr auto 1fr auto 1.25fr; gap:clamp(.5rem,1.3vw,1.1rem); align-items:center; margin-top:clamp(.8rem,2.6vh,1.5rem)}
+  .eq .ein{background:var(--white); border:1px solid var(--g-200); border-radius:14px; padding:clamp(.8rem,2.2vh,1.3rem); text-align:center}
+  .eq .ein .big{display:block; font-size:clamp(1.7rem,5.5vh,2.8rem); font-weight:700; color:var(--sa-700); line-height:1.1}
+  .eq .ein span{font-size:clamp(.68rem,1.7vh,.9rem); color:var(--g-600); font-weight:600}
+  .eq .ecore{background:var(--sa-950); border-radius:16px; padding:clamp(.9rem,2.6vh,1.5rem) clamp(.8rem,1.6vw,1.3rem); text-align:center; color:var(--white)}
+  .eq .ecore svg{inline-size:clamp(2rem,5.5vh,3rem); border-radius:18%}
+  .eq .ecore b{display:block; margin-top:.4rem; font-size:clamp(.85rem,2.2vh,1.15rem)}
+  .eq .eouts{display:flex; flex-direction:column; gap:.5rem}
+  .eq .eout{background:var(--sa-50); border:1px solid var(--sa-200); border-radius:99px; padding:.45rem .9rem; font-weight:700; font-size:clamp(.66rem,1.7vh,.9rem); color:var(--sa-900); text-align:center}
+  .elabel{font-size:clamp(.58rem,1.45vh,.76rem); font-weight:800; color:var(--sa-700); letter-spacing:.02em; margin-bottom:.45rem}
+  .esub{margin-top:.55rem; padding-top:.45rem; border-top:1px dashed var(--g-200); font-size:clamp(.58rem,1.45vh,.76rem); color:var(--g-500); font-weight:600}
+  .ecorelist{margin-top:.55rem; font-size:clamp(.58rem,1.5vh,.78rem); color:var(--sa-200); font-weight:600; line-height:1.7}
+  .briefgates{display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.5rem,1.2vw,.9rem); max-width:60rem; inline-size:100%; align-self:center}
+  .briefgates .bg1{background:var(--white); border:1px solid var(--g-200); border-radius:12px; padding:clamp(.5rem,1.5vh,.8rem); text-align:center; position:relative; overflow:hidden}
+  .briefgates .bg1::before{content:""; position:absolute; inset-inline:0; top:0; height:4px; background:var(--sa-600)}
+  .briefgates b{display:block; color:var(--sa-900); font-size:clamp(.72rem,1.85vh,.98rem)}
+  .briefgates span{display:block; margin-top:.2rem; color:var(--g-600); font-size:clamp(.6rem,1.5vh,.8rem); font-weight:600}
+  .briefproof{display:flex; gap:.4rem .9rem; justify-content:center; align-items:baseline; flex-wrap:wrap; background:var(--g-100); border:1px solid var(--g-200); border-radius:12px; padding:clamp(.45rem,1.4vh,.7rem) 1.1rem; font-size:clamp(.64rem,1.65vh,.88rem); color:var(--g-700); font-weight:600; max-width:60rem; inline-size:100%; align-self:center}
+  .briefproof b{color:var(--g-900); font-size:1.18em}
+  .briefproof .bplabel{color:var(--sa-700); font-weight:800}
+  .briefproof .bpdot{color:var(--g-400)}
+  .eq .earr{color:var(--g-500); display:grid; place-items:center}
+  .eq .earr svg{inline-size:1rem}
+
+  /* ── الفجوة: الخط الزمني ── */
+  .tline{position:relative; margin:clamp(2.2rem,7vh,3.6rem) .5rem clamp(1.2rem,4vh,2rem); height:2.5px; background:var(--g-300); border-radius:2px}
+  .tnode{position:absolute; top:50%; transform:translateY(-50%); border-radius:99px; padding:.5rem 1.1rem; font-weight:700; font-size:clamp(.68rem,1.75vh,.92rem); white-space:nowrap}
+  .tnode.now{inset-inline-start:-0.5rem; background:var(--sa-900); color:var(--white)}
+  .tnode.next{inset-inline-end:-0.5rem; background:var(--white); color:var(--sa-800); border:1.5px solid var(--sa-300)}
+  .ticks{position:absolute; inset-inline:19%; top:-8px; height:18px; border-radius:3px; background:repeating-linear-gradient(to left, var(--warn) 0 3px, transparent 3px 24px); opacity:.9}
+  .tlabel{position:absolute; inset-inline:19%; top:-2.6rem; text-align:center; color:var(--g-700); font-weight:700; font-size:clamp(.7rem,1.8vh,.95rem)}
+  .painrow{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem}
+  .pain{background:var(--g-50); border:1px solid var(--g-200); border-radius:10px; padding:.65rem .95rem; display:flex; gap:.6rem; align-items:flex-start}
+  .pain .pd{inline-size:.55rem; block-size:.55rem; border-radius:50%; background:var(--warn); flex:none; margin-top:.42em}
+  .pain b{display:block; color:var(--g-950); font-size:clamp(.74rem,1.9vh,.95rem)}
+  .pain span{font-size:clamp(.62rem,1.6vh,.8rem); color:var(--g-600); line-height:1.55}
+
+  /* ── لماذا الآن: سُلّم الالتقاء ── */
+  .ladder{display:flex; flex-direction:column; gap:.6rem; margin-top:clamp(.7rem,2.2vh,1.2rem)}
+  .rung{display:flex; align-items:center; gap:clamp(.7rem,1.6vw,1.2rem); background:var(--white); border:1px solid var(--g-200); border-radius:12px; padding:clamp(.6rem,1.8vh,.95rem) clamp(.8rem,1.6vw,1.2rem)}
+  .rung .when{flex:none; min-inline-size:clamp(6.5rem,12vw,8.5rem); text-align:center; background:var(--sa-100); color:var(--sa-800); border-radius:10px; padding:.55rem .8rem; font-weight:700; font-size:clamp(.7rem,1.8vh,.95rem)}
+  .rung .rtx b{display:block; color:var(--g-950); font-size:clamp(.82rem,2.1vh,1.08rem)}
+  .rung .rtx p{font-size:clamp(.7rem,1.75vh,.92rem); color:var(--g-600); margin-top:.15rem; line-height:1.6}
+
+  .cap{display:flex; gap:.45rem; align-items:flex-start; margin-top:.55rem}
+  .cap .n{inline-size:1.35rem; block-size:1.35rem; border-radius:50%; background:var(--sa-600); color:var(--white); display:grid; place-items:center; font-weight:700; font-size:.72rem; flex:none}
+  .cap b{display:block; color:var(--g-950); font-size:clamp(.64rem,1.65vh,.86rem); line-height:1.35}
+  .cap span{display:block; color:var(--g-600); font-size:clamp(.54rem,1.35vh,.72rem); line-height:1.5; margin-top:.15rem}
+
+  .payoff{margin-top:clamp(.7rem,2.2vh,1.2rem); background:var(--sa-900); color:var(--white); border-radius:10px; padding:clamp(.55rem,1.7vh,.95rem) clamp(.9rem,1.8vw,1.4rem); font-size:clamp(.74rem,1.9vh,.98rem); font-weight:600; text-align:center}
+  .payoff b{color:var(--sa-300)}
+
+  .cards{display:grid; gap:clamp(.5rem,1.4vw,1.1rem)}
+  .card{background:var(--white); border:1px solid var(--g-200); border-radius:10px; padding:clamp(.7rem,1.9vh,1.2rem) clamp(.8rem,1.6vw,1.3rem); position:relative; overflow:hidden}
+  .card.tint{background:var(--sa-50); border-color:var(--sa-200)}
+  .card.topline::before{content:""; position:absolute; inset-inline:0; top:0; height:5px; background:var(--sa-600)}
+  .card h3{font-size:clamp(.85rem,2.1vh,1.1rem); font-weight:700; color:var(--g-950)}
+  .card p{font-size:clamp(.7rem,1.7vh,.9rem); color:var(--g-600); line-height:1.6; margin-top:.4rem}
+  .phase{border-radius:10px; padding:clamp(.6rem,1.8vh,1rem) clamp(.8rem,1.6vw,1.3rem)}
+  .phase h4{font-size:clamp(.76rem,1.95vh,.98rem); font-weight:700; margin-bottom:.3rem}
+  .phase ul{list-style:none; display:flex; flex-direction:column; gap:.3rem}
+  .phase li{position:relative; padding-inline-start:1rem; font-size:clamp(.66rem,1.65vh,.86rem); line-height:1.55}
+  .phase li::before{content:""; position:absolute; inset-inline-start:0; top:.5em; inline-size:.35rem; block-size:.35rem; border-radius:50%; background:var(--sa-500)}
+
+  table.stable{width:100%; border-collapse:collapse; font-size:clamp(.66rem,1.75vh,.94rem)}
+  .stable th{background:var(--sa-800); color:var(--white); font-weight:600; padding:.5em .9em; text-align:center}
+  .stable th:first-child{border-start-start-radius:8px}
+  .stable th:last-child{border-start-end-radius:8px}
+  .stable td{border:1px solid var(--g-200); padding:.55em .9em; text-align:center; color:var(--g-700); line-height:1.55}
+  .stable td:first-child{text-align:right; color:var(--g-950)}
+  .stable tr.hl td{background:var(--sa-50)}
+  .dtable{font-size:clamp(.6rem,1.55vh,.85rem)}
+  .dtable td{line-height:1.5; padding:.5em .8em}
+  .dchip{display:block; margin-top:.25rem; color:var(--sa-700); font-weight:700; font-size:.85em}
+  .cov{margin-top:.55rem; background:var(--sa-50); border:1px solid var(--sa-200); border-radius:8px; padding:.45rem .7rem; color:var(--sa-900) !important; font-size:clamp(.64rem,1.6vh,.85rem) !important; line-height:1.6}
+  .cov b{color:var(--sa-800)}
+
+  /* ── الفهم ← القرار ── */
+  .imap{display:flex; flex-direction:column; gap:clamp(.4rem,1.3vh,.65rem)}
+  .irow{display:grid; grid-template-columns:1.15fr 1.6rem 1fr; gap:.55rem; align-items:stretch}
+  .iq{background:var(--white); border:1px solid var(--g-200); border-radius:10px; padding:.55rem .85rem}
+  .iq .src{display:inline-block; background:var(--g-100); color:var(--g-600); border-radius:99px; padding:.08rem .6rem; font-size:clamp(.55rem,1.35vh,.7rem); font-weight:700; margin-bottom:.25rem}
+  .iq p{font-weight:600; color:var(--g-900); font-size:clamp(.66rem,1.7vh,.92rem); line-height:1.55}
+  .iarr{display:grid; place-items:center; color:var(--sa-600)}
+  .iarr svg{inline-size:.85rem}
+  .idec{background:var(--sa-50); border:1px solid var(--sa-200); border-radius:10px; padding:.55rem .85rem; color:var(--sa-900); font-size:clamp(.64rem,1.65vh,.9rem); font-weight:600; display:flex; align-items:center; line-height:1.55}
+
+  /* ── التشيكر والاستبيان ── */
+  .heror{display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(.4rem,1vw,.8rem)}
+  .heroc{background:var(--sa-50); border:1px solid var(--sa-200); border-radius:10px; padding:.55rem .7rem; text-align:center}
+  .heroc .rn{display:block; font-size:clamp(1.2rem,3.8vh,2rem); font-weight:700; color:var(--sa-700); line-height:1.1}
+  .heroc .rl{display:block; font-size:clamp(.55rem,1.4vh,.72rem); color:var(--g-500); font-weight:700; margin-bottom:.2rem}
+  .heroc .rt{display:block; font-size:clamp(.6rem,1.55vh,.8rem); color:var(--g-800); font-weight:600; line-height:1.4; margin-top:.25rem}
+  .pgroups{display:flex; flex-direction:column; gap:.4rem}
+  .pgroup{display:flex; align-items:baseline; gap:.6rem; background:var(--white); border:1px solid var(--g-200); border-radius:10px; padding:.45rem .8rem}
+  .pgroup .pn{flex:none; font-weight:700; color:var(--sa-800); font-size:clamp(.66rem,1.7vh,.88rem); min-inline-size:11.5rem}
+  .pgroup .ps{color:var(--g-600); font-size:clamp(.6rem,1.55vh,.8rem); line-height:1.6}
+  .abar{display:flex; height:clamp(1.6rem,4.5vh,2.4rem); border-radius:99px; overflow:hidden; border:1px solid var(--g-200)}
+  .abar span{display:grid; place-items:center; font-weight:700; color:var(--white); font-size:clamp(.6rem,1.6vh,.85rem); white-space:nowrap}
+  .alegend{display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap; font-size:clamp(.62rem,1.6vh,.84rem); color:var(--g-700); font-weight:600}
+  .alegend i{display:inline-block; inline-size:.7rem; block-size:.7rem; border-radius:3px; margin-inline-end:.35rem; vertical-align:-.05em}
+
+  /* ── درج تفاصيل المعيار ── */
+  [data-std],[data-grp],[data-doc],[data-cat]{cursor:pointer}
+  .abar span[data-cat]:hover{filter:brightness(1.12)}
+  .heroc[data-std]:hover,.pgroup[data-grp]:hover{border-color:var(--sa-500); box-shadow:0 2px 8px rgb(13 61 38 / .12)}
+  tr[data-doc]:hover td{background:var(--sa-50)}
+  .tapHint{display:inline-flex; align-items:center; gap:.4rem; background:var(--sa-100); border:1px solid var(--sa-300); color:var(--sa-800); border-radius:99px; padding:.22rem .8rem; font-size:clamp(.6rem,1.5vh,.78rem); font-weight:700; margin-top:.5rem}
+  .tapHint::before{content:""; inline-size:.5rem; block-size:.5rem; border-radius:50%; background:var(--sa-600); animation:tapPulse 1.6s ease-in-out infinite}
+  @keyframes tapPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @media (prefers-reduced-motion:reduce){.tapHint::before{animation:none}}
+  #veil{position:fixed; inset:0; background:rgb(13 25 39 / .45); z-index:60; opacity:0; pointer-events:none; transition:opacity .25s ease}
+  body.drawer-open #veil{opacity:1; pointer-events:auto}
+  #drawer{position:fixed; inset-block:0; inset-inline-start:0; inline-size:min(30rem,94vw); background:var(--white); z-index:61; box-shadow:0 0 40px rgb(13 25 39 / .25); transform:translateX(105%); visibility:hidden; transition:transform .3s ease, visibility 0s linear .3s; display:flex; flex-direction:column}
+  body.drawer-open #drawer{transform:none; visibility:visible; transition:transform .3s ease}
+  #drawer .dh{background:var(--sa-950); color:var(--white); padding:1rem 1.2rem; flex:none}
+  #drawer .dh .dk{display:flex; align-items:center; gap:.5rem; margin-bottom:.4rem}
+  #drawer .dh .idchip{background:var(--sa-800); color:var(--sa-200); border-radius:99px; padding:.12rem .7rem; font-weight:700; font-size:.78rem}
+  #drawer .dh h4{font-size:1.05rem; font-weight:700; line-height:1.45}
+  #drawer .dh .dm{color:var(--sa-300); font-size:.78rem; margin-top:.35rem; font-weight:600}
+  #dx{position:absolute; inset-inline-end:.8rem; top:.8rem; inline-size:2rem; block-size:2rem; border-radius:50%; border:none; background:rgb(255 255 255 / .12); color:var(--white); font-size:1rem; cursor:pointer; z-index:1}
+  #dx:hover{background:rgb(255 255 255 / .22)}
+  #dback{background:none; border:none; color:var(--sa-300); font-weight:700; font-size:.78rem; cursor:pointer; padding:0; margin-bottom:.35rem; display:none}
+  body.has-back #dback{display:inline-block}
+  #dbody{flex:1; overflow-y:auto; padding:1rem 1.2rem}
+  #dbody .rqt{font-weight:700; color:var(--g-950); font-size:.85rem; margin-bottom:.6rem}
+  #dbody ol.rq{list-style:none; display:flex; flex-direction:column; gap:.45rem; counter-reset:rq}
+  #dbody ol.rq li{background:var(--g-50); border:1px solid var(--g-200); border-radius:8px; padding:.5rem .8rem; padding-inline-start:2.3rem; position:relative; font-size:.82rem; color:var(--g-800); line-height:1.65; counter-increment:rq}
+  #dbody ol.rq li::before{content:counter(rq); position:absolute; inset-inline-start:.6rem; top:.55rem; inline-size:1.25rem; block-size:1.25rem; border-radius:50%; background:var(--sa-600); color:var(--white); font-weight:700; font-size:.68rem; display:grid; place-items:center}
+  #dbody ol.rq li.sub{margin-inline-start:1.4rem; background:var(--white); counter-increment:none; padding-inline-start:.9rem}
+  #dbody ol.rq li.sub::before{content:"—"; background:none; color:var(--sa-600); inset-inline-start:.2rem; top:.4rem}
+  #dbody ul.gl{list-style:none; display:flex; flex-direction:column; gap:.5rem}
+  #dbody ul.gl li{border:1px solid var(--g-200); border-radius:10px; padding:.6rem .9rem; display:flex; justify-content:space-between; align-items:center; gap:.8rem; font-weight:600; color:var(--g-900); font-size:.85rem}
+  #dbody ul.gl li:hover{border-color:var(--sa-500)}
+  #dbody ul.gl li .rcnt{flex:none; background:var(--sa-100); color:var(--sa-800); border-radius:99px; padding:.15rem .7rem; font-weight:700; font-size:.72rem}
+  #dbody .src{margin-top:.9rem; color:var(--g-500); font-size:.7rem}
+  #dnav{display:none; align-items:center; gap:.6rem; margin-top:.55rem}
+  body.std-view #dnav{display:flex}
+  #dnav button{inline-size:1.7rem; block-size:1.7rem; border-radius:50%; border:1px solid var(--sa-700); background:rgb(255 255 255 / .1); color:var(--white); font-size:1rem; cursor:pointer; line-height:1}
+  #dnav button:hover{background:rgb(255 255 255 / .22)}
+  #dnav #dpos{color:var(--sa-300); font-weight:700; font-size:.78rem}
+  #dbody ol.rq li, #dbody ul.ck li, #dbody ul.gl li{animation:dIn .35s ease both}
+  #dbody li:nth-child(1){animation-delay:.03s}#dbody li:nth-child(2){animation-delay:.08s}
+  #dbody li:nth-child(3){animation-delay:.13s}#dbody li:nth-child(4){animation-delay:.18s}
+  #dbody li:nth-child(5){animation-delay:.23s}#dbody li:nth-child(6){animation-delay:.28s}
+  #dbody li:nth-child(7){animation-delay:.33s}#dbody li:nth-child(8){animation-delay:.38s}
+  @keyframes dIn{from{opacity:0; transform:translateY(8px)}}
+  @media (prefers-reduced-motion:reduce){#dbody li{animation:none !important}}
+  #dbody ul.ck{list-style:none; display:flex; flex-direction:column; gap:.4rem; margin-top:.5rem}
+  #dbody ul.ck li{position:relative; padding-inline-start:1.2rem; font-size:.8rem; color:var(--sa-900); line-height:1.6; background:var(--sa-50); border:1px solid var(--sa-200); border-radius:8px; padding:.45rem .8rem .45rem .8rem; padding-inline-start:1.9rem}
+  #dbody ul.ck li::before{content:"✓"; position:absolute; inset-inline-start:.6rem; top:.45rem; color:var(--sa-700); font-weight:700}
+
+  .thread{position:relative; display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.8rem,2vw,1.6rem); margin-top:clamp(1.2rem,3.6vh,2rem)}
+  .thread::before{content:""; position:absolute; inset-inline:10%; top:-.9rem; border-top:2px solid var(--sa-300)}
+  .station{position:relative}
+  .station::before{content:""; position:absolute; top:-1.18rem; inset-inline-start:50%; transform:translateX(50%); inline-size:.68rem; block-size:.68rem; border-radius:50%; background:var(--sa-600); border:2.5px solid var(--white); box-shadow:0 0 0 2px var(--sa-300)}
+  .station .st-k{display:inline-block; background:var(--sa-100); color:var(--sa-800); border-radius:99px; padding:.16rem .7rem; font-size:clamp(.58rem,1.45vh,.76rem); font-weight:700; margin-bottom:.45rem}
+  .station .vg{margin-bottom:.55rem}
+
+  #progress{position:fixed; top:0; inset-inline-start:0; height:3px; background:var(--sa-500); width:0; z-index:40; transition:width .3s ease}
+  #hud{position:fixed; bottom:0; inset-inline:0; z-index:40; pointer-events:none; display:flex; justify-content:space-between; align-items:center; padding:.5rem clamp(1.2rem,4vw,4rem); font-size:.72rem; color:var(--g-500)}
+  body.on-dark #hud{color:var(--sa-300)}
+  #counter{direction:ltr; unicode-bidi:isolate}
+  #hud .brand{display:flex; align-items:center; gap:.45rem; font-weight:600}
+  #hud .brand svg{inline-size:1.05rem; border-radius:4px}
+  #hint{position:fixed; bottom:2.6rem; inset-inline-start:50%; transform:translateX(50%); background:var(--g-900); color:var(--white); font-size:.75rem; padding:.5rem 1rem; border-radius:99px; z-index:50; opacity:.92; transition:opacity .6s ease}
+  #hint.gone{opacity:0; pointer-events:none}
+
+  @media (max-width: 900px), (orientation: portrait){
+    section.slide{padding:1.1rem 1.2rem; overflow-y:auto}
+    .cards,.thread{grid-template-columns:1fr !important}
+    .thread::before,.station::before{display:none}
+    .grow{justify-content:flex-start; gap:.8rem}
+    h1.title{font-size:clamp(1.1rem,5vw,1.5rem)}
+    .strip{flex-wrap:wrap; gap:.6rem}
+    .frame{flex:0 0 calc(50% - .3rem)}
+    .jarr{display:none}
+    .rail{flex-direction:column}
+  }
+  @media print{
+    @page{size:297mm 167mm; margin:0}
+    body{overflow:visible; background:var(--white)}
+    main.deck{position:static}
+    section.slide{position:relative; opacity:1; visibility:visible; transform:none; height:167mm; page-break-after:always; inset:auto}
+    .reveal{opacity:1; transform:none}
+    #progress,#hud,#hint,#drawer,#veil,#homeBtn{display:none}
+  }
+</style>
+</head>
+<body>
+
+<main class="deck" id="deck">
+
+<!-- 1 · الغلاف -->
+<section class="slide dark" aria-label="الغلاف">
+  <div style="position:absolute; inset-inline-start:-8%; bottom:-32%; inline-size:44vw; aspect-ratio:1; background:var(--sa-900); opacity:.55; border-radius:22%"></div>
+  <div style="position:absolute; inset-inline-end:-6%; top:-38%; inline-size:36vw; aspect-ratio:1; background:var(--sa-900); opacity:.4; border-radius:22%"></div>
+  <div class="grow" style="position:relative">
+    <svg style="inline-size:clamp(2.6rem,7vh,4rem); border-radius:18%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <h1 class="reveal" style="font-size:clamp(2rem,7.2vh,3.8rem); font-weight:700; margin-top:clamp(.7rem,2.6vh,1.3rem)">ثلاث بوابات… منظومة واحدة</h1>
+    <p class="reveal" style="font-size:clamp(1rem,2.9vh,1.45rem); color:var(--sa-200); margin-top:.45rem">رحلات الاستخدام مرسومةً شاشة بشاشة — الهيئة، والجهات، والتصميم</p>
+    <div class="reveal" style="display:flex; gap:.7rem; margin-top:clamp(.9rem,3vh,1.6rem); max-width:26rem">
+      <div class="vg" style="flex:1"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:45%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div></div></div>
+      <div class="vg" style="flex:1"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot d-r"></span><div class="ln" style="width:55%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:40%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:48%"></div></div></div></div>
+      <div class="vg" style="flex:1"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art" style="border-color:var(--sa-300)"><div class="shp" style="height:24%; width:42%"></div><div class="ln" style="width:70%"></div></div></div></div>
+    </div>
+    <p class="reveal" style="font-size:clamp(.88rem,2.2vh,1.1rem); font-weight:700; margin-top:clamp(.9rem,3vh,1.5rem)">عرض مرافق — هيئة الحكومة الرقمية</p>
+    <p class="reveal num" style="font-size:clamp(.72rem,1.75vh,.88rem); color:var(--sa-300); margin-top:.4rem">مُطابق · أغسطس 2026</p>
+  </div>
+  <p style="position:relative; font-size:clamp(.72rem,1.7vh,.85rem); color:var(--sa-300)">إعداد وتقديم: آية أحمد</p>
+</section>
+
+<!-- 1ب · البريف -->
+<section class="slide" aria-label="البريف">
+  <header>
+    <p class="kicker">قبل أن نبدأ — بريف</p>
+    <h1 class="title">ما هو مُطابق؟</h1>
+    <div class="accent"></div>
+    <p class="lead">منصة تحوّل معايير هيئة الحكومة الرقمية إلى نظام حي — يقيس آليًا، ويرشد إلى الإصلاح، وينظّم الأدلة باستمرار:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.55rem,1.8vh,1rem)">
+    <div class="eq reveal">
+      <div class="ein">
+        <p class="elabel">المدخل — معاييركم كما هي</p>
+        <span class="big num">89</span><span>معيارًا — الإصدار الخامس V5.0<br>كما نشرته الهيئة حرفيًا</span>
+        <div class="esub num">355 صفحة رسمية قُرئت صفحةً صفحة</div>
+      </div>
+      <span class="earr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="ecore"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><b>مُطابق</b>
+        <div class="ecorelist">فحص آلي بمتصفح حقيقي<br>قواعد مُسندة لمعيارها<br>استبيان وأدلة لما لا يُقاس آليًا</div>
+      </div>
+      <span class="earr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="eouts">
+        <p class="elabel">المخرج — قرار قابل للتنفيذ</p>
+        <div class="eout">ملاحظات تشير إلى مكانها وإصلاحها</div>
+        <div class="eout">تقارير وأدلة جاهزة لدورة القياس</div>
+        <div class="eout">صورة حية تتحدث مع كل فحص</div>
+      </div>
+    </div>
+    <div class="briefgates reveal">
+      <div class="bg1"><b>بوابة الهيئة</b><span>إشراف ورقابة مستمرة</span></div>
+      <div class="bg1"><b>بوابة الجهة</b><span>جاهزية دائمة قبل القياس</span></div>
+      <div class="bg1"><b>بوابة التصميم</b><span>وقاية قبل أن يُبرمَج</span></div>
+    </div>
+    <div class="briefproof reveal"><span class="bplabel">يعمل اليوم فعلًا:</span><span class="num"><b>3,571</b> فحصًا مكتملًا</span><span class="bpdot">·</span><span class="num"><b>147,966</b> ملاحظة مرصودة</span><span class="bpdot">·</span><span class="num"><b>130</b> جهة في الكتالوج</span></div>
+  </div>
+</section>
+
+<!-- 1ب٢ · كيف تقيس الهيئة اليوم -->
+<section class="slide" aria-label="كيف تقيس الهيئة اليوم">
+  <header>
+    <p class="kicker">الوضع الراهن — كما هو رسميًا</p>
+    <h1 class="title">كيف تقيس الهيئة اليوم؟</h1>
+    <div class="accent"></div>
+    <p class="lead num">عبر «المعايير الأساسية للتحول الرقمي» — 89 معيارًا في الإصدار الخامس — بدورة سنوية على نظام «قياس»:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.55rem,1.8vh,1rem)">
+    <div class="strip reveal" style="margin-top:0">
+      <div class="frame">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill" style="background:var(--g-300); border-color:var(--g-300)"></span><span class="stpill"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">1</span><div><b>تُفتح دورة القياس السنوية</b><span>على نظام «قياس» — وفق مراحل محددة معلنة</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:72%"></div><div class="ln" style="width:56%"></div><div class="ln lt" style="width:64%; margin-top:auto"></div></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">2</span><div><b>الجهة تجيب وترفع الأدلة</b><span>مستندات ضمن نافذة زمنية محددة لصلاحيتها</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:50%"></div></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">3</span><div><b>مراجعة وتحقق</b><span>تدقيق الإجابات والأدلة على مستوى المتطلبات</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="vrow" style="justify-content:center; gap:6%"><span class="stpill" style="flex:0 0 26%; min-height:9px; background:var(--g-700); border-color:var(--g-700)"></span><span class="stpill" style="flex:0 0 26%; min-height:9px; background:var(--g-300); border-color:var(--g-300)"></span><span class="stpill" style="flex:0 0 26%; min-height:9px"></span></div><div class="ln" style="width:62%; align-self:center"></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">4</span><div><b>تقدير لكل معيار</b><span>التزام كلي / جزئي / عدم التزام — و«لا ينطبق» بضوابطها</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck" style="background:var(--g-700)">✓</span><div class="ln" style="width:34%"></div></div></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">5</span><div><b>النتائج والتقارير</b><span>مع نافذة اعتراض محددة ضمن الدورة</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0; background:var(--sa-50); color:var(--sa-900); border:1px solid var(--sa-200); text-align:right"><b style="color:var(--sa-800)">الاستثناء الوحيد — وهو المفتاح:</b>&nbsp; منظور «كفاءة المواقع وجودة المحتوى الرقمي» لا يتطلب أدلة — <b style="color:var(--sa-800)">تتحقق منه الهيئة آليًا من المواقع مباشرة</b>. القياس الآلي إذًا جزء من المنهجية الرسمية بالفعل… وهنا يبدأ دورنا.</div>
+    <p class="reveal" style="color:var(--g-500); font-size:clamp(.64rem,1.6vh,.84rem)">وتكتمل الصورة بأداتين رسميتين أخريين: مؤشر نضج التجربة الرقمية DXMI، ومؤشر كفاءة المواقع الإلكترونية والمحتوى الرقمي — لكل منهما نطاقه ومنهجيته.</p>
+  </div>
+</section>
+
+<!-- 1ب٣ · وثائقكم -->
+<section class="slide" aria-label="وثائقكم">
+  <header>
+    <p class="kicker">مصادرنا — وثائقكم أنفسها</p>
+    <h1 class="title">قرأناها وثيقةً وثيقة… وهكذا تحوّلت إلى نظام</h1>
+    <div class="accent"></div>
+    <span class="tapHint">تفاعلي — النقر على أي وثيقة يعرض أبرز ما التقطناه منها</span>
+  </header>
+  <div class="grow" style="gap:clamp(.45rem,1.5vh,.8rem)">
+    <div class="reveal" style="overflow-x:auto">
+      <table class="stable dtable">
+        <thead><tr><th style="text-align:right">الوثيقة</th><th>ما فهمناه منها</th><th>أين تعيش في مُطابق</th></tr></thead>
+        <tbody>
+          <tr data-doc="v5"><td><b>وثيقة المعايير الأساسية للتحول الرقمي</b><span class="dchip num">V5.0 · 155 صفحة</span></td><td class="num">الإطار كاملًا: 10 منظورات × 24 محورًا × 89 معيارًا بمتطلباتها — ومنهجية التقدير: كلي / جزئي / عدم التزام</td><td class="num">الكتالوج الحي بنصوصه الحرفية وسجل إصداراته + تصنيف طريقة التحقق + 128 قاعدة فحص مُسندة</td></tr>
+          <tr class="hl" data-doc="eff"><td><b>الدليل التعريفي لمؤشر كفاءة المواقع الإلكترونية والمحتوى الرقمي</b><span class="dchip num">V2.0 · 19 صفحة</span></td><td class="num">منظوران × 11 محورًا — الكفاءة التقنية (6 محاور) تُقاس بأدوات آلية، وتجربة المحتوى (5) بتصفح خبير</td><td>هذا الدليل يرسم «خط الأتمتة» — ومحرك الفحص عندنا يقيس آليًا ما رسمه آليًا</td></tr>
+          <tr data-doc="content"><td><b>الدليل الاسترشادي للمحتوى الرقمي للمواقع الحكومية</b><span class="dchip num">V1.0 · 41 صفحة</span></td><td>إرشادات جودة المحتوى الرقمي الحكومي: اللغة، والبنية، وحداثة المحتوى</td><td>حزمة قواعد جودة المحتوى داخل محرك الفحص</td></tr>
+          <tr data-doc="dxmi"><td><b>أدلة منظورات مؤشر نضج التجربة الرقمية</b><span class="dchip num">ثلاث وثائق مقيدة التداول · إصدارا 2025 و2026 · 140 صفحة</span></td><td class="num">منهجية الاستجابة بالأدلة على المنظورات، بأهداف رقمية دقيقة — وتتبعنا تطور المنهجية نفسها بين دورتين</td><td>تصميم مسار الأدلة والتقييم الذاتي · حدود الأدوات (لا خلط مع المعايير الأساسية) · ومبدأ سجل الإصدارات</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cards reveal" style="grid-template-columns:1fr 1fr; gap:.6rem">
+      <div class="num" style="border:1px solid var(--g-200); border-radius:10px; padding:.5rem 1rem; text-align:center; font-weight:700; color:var(--g-800); font-size:clamp(.7rem,1.8vh,.95rem); background:var(--g-50)">355 صفحة — قُرئت صفحةً صفحة</div>
+      <div style="border:1.5px dashed var(--sa-300); border-radius:10px; padding:.5rem 1rem; text-align:center; font-weight:600; color:var(--sa-900); font-size:clamp(.66rem,1.7vh,.9rem); background:var(--sa-50)">الوثائق المقيدة نلتزم بتصنيفها — فلا نعرض عناوينها، حتى في هذا العرض</div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>الخلاصة:</b>&nbsp; لم نقرأ عن وثائقكم — قرأنا وثائقكم؛ وكل قاعدة في نظامنا تعرف من أي صفحة جاءت.</div>
+  </div>
+</section>
+
+<!-- 1ب٤ · الفهم ← القرار -->
+<section class="slide" aria-label="الفهم والقرار">
+  <header>
+    <p class="kicker">من القراءة إلى المعمارية</p>
+    <h1 class="title">ماذا فهمنا — وكيف صاغ الفهمُ النظام</h1>
+    <div class="accent"></div>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem)">
+    <div class="imap reveal">
+      <div class="irow">
+        <div class="iq"><span class="src">V5.0 + دليل الكفاءة</span><p class="num">الهيئة تقيس آليًا منظورًا واحدًا فقط: «كفاءة المواقع وجودة المحتوى الرقمي»</p></div>
+        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <div class="idec num">فركّز المحرك هناك أولًا: تغطية 100% لهذا المنظور (4/4) — و17 معيارًا إجمالًا حيث تصدق الآلة</div>
+      </div>
+      <div class="irow">
+        <div class="iq"><span class="src">V5.0 — كل الصفحات الـ155</span><p>لا توجد أوزان منشورة إطلاقًا — والتقدير الرسمي على مستوى المعيار: كلي / جزئي / عدم التزام</p></div>
+        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <div class="idec">فلا يخترع النظام أوزانًا: منهجية الهيئة هي المرجع، وكل مؤشر تجميعي مُوسَم «تشخيصيًا»</div>
+      </div>
+      <div class="irow">
+        <div class="iq"><span class="src">V5.0 + دليلا DXMI</span><p class="num">أغلب الإطار طبيعته مستندية — 62 معيارًا بتصنيف الكتالوج تُثبَت بالوثائق والأدلة، لا بالفحص</p></div>
+        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <div class="idec">فبُني مساران لا يختلطان أبدًا: قياس آلي حيث يمكن، وأدلة منظمة حيث يجب</div>
+      </div>
+      <div class="irow">
+        <div class="iq"><span class="src">الوثائق الست معًا</span><p>ثلاث أدوات رسمية منفصلة — لكل منها نطاقها ومنهجيتها، ورقم الوثيقة لا يحدد هويتها</p></div>
+        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <div class="idec">فلا يخلط النظام بينها: كتالوج المعايير شيء، وDXMI شيء، والكفاءة شيء — بحدود صريحة</div>
+      </div>
+      <div class="irow">
+        <div class="iq"><span class="src">نسختا 2025 و2026</span><p>المنهجيات نفسها تتطور بين دورة وأخرى — والوثيقة الواحدة لها أجيال</p></div>
+        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <div class="idec">فالكتالوج مُدار بالإصدارات: التحديث ترقية موثقة لا تكسر تاريخ القياس</div>
+      </div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>الخلاصة:</b>&nbsp; كل قرار معماري في مُطابق له سطر في وثائقكم يبرره — الفهم أولًا، ثم البناء.</div>
+  </div>
+</section>
+
+<!-- 1ج · الفجوة -->
+<section class="slide" aria-label="الفجوة">
+  <header>
+    <p class="kicker">الفجوة — التي نعود لحلّها</p>
+    <h1 class="title">القياس سنوي… والمواقع تتغير كل يوم</h1>
+    <div class="accent"></div>
+    <p class="lead">بين دورة القياس والدورة التي تليها، تتغير المواقع والمنصات الحكومية آلاف المرات — وفي هذه المسافة تعيش الفجوة:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.7vh,1rem)">
+    <div class="reveal">
+      <div class="tline">
+        <span class="tlabel">آلاف التغييرات على المواقع والمنصات — بلا رصد مستمر</span>
+        <span class="ticks"></span>
+        <span class="tnode now">دورة قياس هذا العام</span>
+        <span class="tnode next num">الدورة التالية — بعد سنة</span>
+      </div>
+    </div>
+    <div class="painrow reveal">
+      <div class="pain"><span class="pd"></span><span><b>اكتشاف متأخر</b><span>الفجوات تظهر أثناء القياس نفسه — حين تكون كلفة التصحيح في أعلاها.</span></span></div>
+      <div class="pain"><span class="pd"></span><span><b>جهد يدوي مبعثر</b><span>أدلة وتنسيق عبر ملفات وبريد — دون أثر مؤسسي تراكمي.</span></span></div>
+      <div class="pain"><span class="pd"></span><span><b>رؤية إشرافية متقطعة</b><span>صورة الالتزام تتشكل من دورات متباعدة — لا رصد مستمر.</span></span></div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>وهذه تحديدًا هي الفجوة</b> التي صُممت البوابات الثلاث لإغلاقها — فلنعبرها واحدةً واحدة.</div>
+  </div>
+</section>
+
+
+<!-- 2 · خريطة الرحلة -->
+<section class="slide" aria-label="خريطة الرحلة">
+  <header>
+    <p class="kicker">خريطة الرحلة</p>
+    <h1 class="title">منظومة واحدة تُفتح من ثلاث بوابات</h1>
+    <div class="accent"></div>
+    <p class="lead">سنعبر البوابات بالترتيب — الهيئة، ثم الجهة الحكومية، ثم التصميم — ونختم بتتبع ملاحظة واحدة وهي تمر بها جميعًا. كل خطوة مرسومة كشاشة توضيحية تخطيطية؛ والمنصة الحقيقية تُعرض مباشرة عند الطلب.</p>
+    <span class="tapHint">تفاعلي — النقر على أي بوابة ينتقل إلى رحلتها مباشرة</span>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
+    <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card topline tint reveal" data-go="12">
+        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <h3>البوابة الأولى — الهيئة</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الإشراف</p><p>رؤية شاملة لالتزام الجهات، وحملات فحص، ومتابعة موثقة حتى الإغلاق.</p>
+      </div>
+      <div class="card topline reveal" data-go="14">
+        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="stage"><div class="scan"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <h3>البوابة الثانية — الجهة الحكومية</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الجاهزية</p><p>فحص مستمر، وملاحظات قابلة للتنفيذ، وملف قياس يكتمل قبل الدورة الرسمية.</p>
+      </div>
+      <div class="card topline reveal" data-go="17">
+        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:13%; width:26%; border-radius:99px"></div><div class="ln" style="width:70%"></div></div></div></div>
+        <h3>البوابة الثالثة — التصميم</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الوقاية</p><p>مُطابق لفيجما يفحص التصميم قبل أول سطر كود — فيمنع الملاحظة قبل أن تولد.</p>
+      </div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0; background:var(--sa-50); color:var(--sa-900); border:1px solid var(--sa-200)"><b style="color:var(--sa-800)">القاعدة الواحدة:</b> البوابات الثلاث تفتح على سجل واحد — نفس المعايير، نفس الملاحظات، نفس الحقيقة.</div>
+  </div>
+</section>
+
+<!-- 2ب · هيكلة الحل -->
+<section class="slide" aria-label="هيكلة الحل">
+  <header>
+    <p class="kicker">هيكلة الحل</p>
+    <h1 class="title">ثلاث بوابات… على نواة واحدة وأساس واحد</h1>
+    <div class="accent"></div>
+    <span class="tapHint">تفاعلي — النقر على أي بوابة ينتقل إلى رحلتها</span>
+  </header>
+  <div class="grow" style="gap:clamp(.45rem,1.5vh,.8rem); max-width:66rem; align-self:center; inline-size:100%">
+    <div class="cards reveal" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card topline tint" data-go="12" style="text-align:center"><h3>مُطابق للمراجعين</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.15rem">بوابة الهيئة — الإشراف</p><p class="who">تستخدمها <b>فرق المراجعة والإشراف في الهيئة</b> — إطلاق الحملات، اعتماد الملاحظات، والتحقق من المعالجات</p></div>
+      <div class="card topline" data-go="14" style="text-align:center"><h3>مُطابق للجهات</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.15rem">بوابة الجهة — الجاهزية</p><p class="who">تستخدمها <b>فرق التحول الرقمي والالتزام في الجهة</b> — استقبال الملاحظات، الاستبيان والأدلة، ومتابعة المعالجة</p></div>
+      <div class="card topline" data-go="17" style="text-align:center"><h3>مُطابق لفيجما</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.15rem">بوابة التصميم — الوقاية</p><p class="who">تستخدمها <b>فرق تصميم المنصات الحكومية</b> — و<b>فرق المراجعة</b> حين يُشارَك معها التصميم — لفحصه قبل أن يتحول إلى موقع أصلًا</p></div>
+    </div>
+    <div class="reveal" style="display:flex; justify-content:space-around; padding-inline:12%">
+      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+    </div>
+    <div class="reveal" style="background:var(--sa-900); border-radius:12px; padding:clamp(.7rem,2vh,1.2rem) clamp(.9rem,1.8vw,1.4rem)">
+      <p style="color:var(--sa-300); font-weight:700; font-size:clamp(.7rem,1.75vh,.92rem); margin-bottom:.55rem">النواة المشتركة — تُبنى مرة، وتخدم الجميع</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem">
+        <div class="corechip num">كتالوج المعايير V5.0 — 89 معيارًا بسجل إصدارات</div>
+        <div class="corechip num">محرك القواعد — 128 قاعدة بإسناد 1:1</div>
+        <div class="corechip">محرك الفحص — متصفح حقيقي معزول</div>
+        <div class="corechip">الملاحظات — بدورة حياة واعتراض</div>
+        <div class="corechip">مسار الأدلة والتقييم الذاتي</div>
+        <div class="corechip">التقارير والشهادات</div>
+      </div>
+    </div>
+    <div class="reveal" style="background:var(--g-100); border:1px solid var(--g-200); border-radius:12px; padding:clamp(.5rem,1.5vh,.85rem) clamp(.9rem,1.8vw,1.4rem); display:flex; flex-wrap:wrap; gap:.4rem .9rem; justify-content:center; font-size:clamp(.62rem,1.6vh,.84rem); color:var(--g-700); font-weight:600">
+      <span>الأساس:</span><span>عزل الجهات على مستوى قاعدة البيانات (RLS)</span><span>·</span><span>سجل تدقيق مُسلسل التجزئة</span><span>·</span><span>تحقق ثنائي TOTP</span><span>·</span><span>استضافة أوروبية اليوم — ومحلية على الخارطة</span><span>·</span><span>عربية أولًا RTL</span>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>لماذا هذا مهم:</b>&nbsp; النواة الواحدة تعني حقيقة واحدة — أي تحسين في القياس يصل للهيئة والجهات والمصممين في اللحظة نفسها.</div>
+  </div>
+</section>
+
+<!-- 2ج · الواقع بالأرقام -->
+<section class="slide" aria-label="الواقع بالأرقام">
+  <header>
+    <p class="kicker">قبل الحكاية — الواقع</p>
+    <h1 class="title">هذه الرحلات تجري اليوم فعلًا — ليست تصورًا</h1>
+    <div class="accent"></div>
+    <p class="lead">ما ستشاهدونه في بوابات <b style="color:var(--g-800)">الهيئة</b> و<b style="color:var(--g-800)">الجهة</b> و<b style="color:var(--g-800)">التصميم</b> قائمٌ ويعمل اليوم — والفحص يجري على مواقع حكومية حقيقية:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
+    <div class="cards" style="grid-template-columns:repeat(5,1fr)">
+      <div class="card tint reveal" style="text-align:center"><p class="num" style="font-size:clamp(1.3rem,4.2vh,2.2rem); font-weight:700; color:var(--sa-700); margin:0">3,571</p><p style="margin-top:.25rem; font-weight:600; color:var(--g-800)">فحصًا مكتملًا</p></div>
+      <div class="card reveal" style="text-align:center"><p class="num" style="font-size:clamp(1.3rem,4.2vh,2.2rem); font-weight:700; color:var(--sa-700); margin:0">147,966</p><p style="margin-top:.25rem; font-weight:600; color:var(--g-800)">ملاحظة مرصودة</p></div>
+      <div class="card reveal" style="text-align:center"><p class="num" style="font-size:clamp(1.3rem,4.2vh,2.2rem); font-weight:700; color:var(--sa-700); margin:0">130</p><p style="margin-top:.25rem; font-weight:600; color:var(--g-800)">جهة في الدليل</p></div>
+      <div class="card reveal" style="text-align:center"><p class="num" style="font-size:clamp(1.3rem,4.2vh,2.2rem); font-weight:700; color:var(--sa-700); margin:0">89</p><p style="margin-top:.25rem; font-weight:600; color:var(--g-800)">معيارًا — V5.0</p></div>
+      <div class="card reveal" style="text-align:center"><p class="num" style="font-size:clamp(1.3rem,4.2vh,2.2rem); font-weight:700; color:var(--sa-700); margin:0">128</p><p style="margin-top:.25rem; font-weight:600; color:var(--g-800)">قاعدة فحص آلية</p></div>
+    </div>
+    <p class="reveal" style="text-align:center; color:var(--g-500); font-size:clamp(.66rem,1.65vh,.85rem)">الأرقام مقروءة من قاعدة بيانات المنصة مباشرة بتاريخ إعداد العرض — لا تقديرات ولا أرقام تسويقية.</p>
+    <p class="reveal" style="text-align:center; color:var(--sa-800); font-weight:600; font-size:clamp(.66rem,1.65vh,.85rem)">والفحص خارجيٌّ يقرأ الصفحات العامة فقط — كما يقرؤها أي متصفح — بحدود مهذبة؛ والنتائج التفصيلية لأي جهة لا تُعرض إلا بحضورها أو بإذنها.</p>
+  </div>
+</section>
+
+<!-- 2د · ماذا يقيس الفاحص — بالاسم -->
+<section class="slide" aria-label="ماذا يقيس الفاحص">
+  <header>
+    <p class="kicker">داخل المحرك — بالاسم والعدد</p>
+    <h1 class="title">ماذا يقيس الفاحص الآلي؟ هذه المعايير الـ17 — بأسمائها</h1>
+    <div class="accent"></div>
+    <p class="lead num">خمسة معايير تحمل وحدها 99 قاعدة من أصل 128 — وهذه هي:</p>
+    <span class="tapHint">تفاعلي — النقر على أي معيار أو مجموعة يعرض متطلباته الرسمية وفحوصاتنا عليه</span>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem)">
+    <div class="heror reveal">
+      <div class="heroc" data-std="5.17.2"><span class="rn num">39</span><span class="rl">قاعدة فحص</span><span class="rt">تنفيذ خطط إتاحة الخدمات على القنوات الرقمية وتحسينها</span></div>
+      <div class="heroc" data-std="5.21.1"><span class="rn num">20</span><span class="rl">قاعدة فحص</span><span class="rt">موثوقية وأمن الموقع الإلكتروني للجهة</span></div>
+      <div class="heroc" data-std="5.22.2"><span class="rn num">16</span><span class="rl">قاعدة فحص</span><span class="rt">الجودة التحريرية للمحتوى الرقمي</span></div>
+      <div class="heroc" data-std="5.21.2"><span class="rn num">13</span><span class="rl">قاعدة فحص</span><span class="rt">كفاءة الموقع وتحسين ظهوره على محركات البحث</span></div>
+      <div class="heroc" data-std="5.15.4" style="background:var(--white)"><span class="rn num">11</span><span class="rl">قاعدة فحص</span><span class="rt">نظام التصميم الوطني الموحّد «كود المنصات»</span></div>
+    </div>
+    <div class="pgroups reveal">
+      <div class="pgroup" data-grp="p9"><span class="pn num">كفاءة المواقع — 4/4 ⭐</span><span class="ps">موثوقية وأمن الموقع · كفاءة الموقع وSEO · الجودة التحريرية للمحتوى · القيمة المضافة للمحتوى — المنظور المقيس آليًا رسميًا، مغطى بالكامل</span></div>
+      <div class="pgroup" data-grp="p7"><span class="pn num">القنوات والخدمات — 5</span><span class="ps">تنفيذ خطط إتاحة الخدمات · تكامل واتساق القنوات · آلية قياس جودة الخدمات · التخطيط للإتاحة · الخدمات الاستباقية</span></div>
+      <div class="pgroup" data-grp="p8"><span class="pn num">مركزية المستفيد — 4</span><span class="ps">متابعة مشاركات المستفيدين · قنوات المشاركة الإلكترونية · برنامج العلاقة مع المستفيد · دراسة تجربة المستفيد</span></div>
+      <div class="pgroup" data-grp="p6"><span class="pn num">الحكومة الشاملة — 3</span><span class="ps">«كود المنصات» · حوكمة النطاقات الحكومية · الارتباط بالأنظمة والخدمات المشتركة</span></div>
+      <div class="pgroup" data-grp="p5"><span class="pn num">تقنية المعلومات — 1</span><span class="ps">تنفيذ ومتابعة أعمال إدارة الخدمات التقنية</span></div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>ولمسة نعتز بها:</b>&nbsp; نقيس التزام المواقع بـ«كود المنصات» — ومنصتنا نفسها مبنية به. كل قاعدة من الـ128 مُسندة لأحد هذه المعايير: لا قياس بلا مرجع.</div>
+  </div>
+</section>
+
+<!-- 2هـ · الاستبيان والأدلة -->
+<section class="slide" aria-label="الاستبيان والأدلة">
+  <header>
+    <p class="kicker">داخل مسار الأدلة — بالاسم أيضًا</p>
+    <h1 class="title">وماذا يُدار بالاستبيان والملفات من الجهة؟</h1>
+    <div class="accent"></div>
+    <p class="lead num">طبيعة المعايير الـ89 كما يصنفها الكتالوج — من قاعدة البيانات مباشرة:</p>
+    <span class="tapHint">تفاعلي — النقر على أي شريحة يعرض معايير الفئة بأسمائها</span>
+  </header>
+  <div class="grow" style="gap:clamp(.55rem,1.8vh,1rem)">
+    <div class="reveal">
+      <div class="abar num">
+        <span data-cat="auto" style="width:10.1%; background:var(--sa-600)">9</span>
+        <span data-cat="partial" style="width:20.2%; background:var(--sa-300); color:var(--sa-900)">18</span>
+        <span data-cat="evidence" style="width:69.7%; background:var(--g-600)">62</span>
+      </div>
+      <div class="alegend" style="margin-top:.5rem">
+        <span><i style="background:var(--sa-600)"></i>آلية بالكامل — يقيسها الفاحص وحده</span>
+        <span><i style="background:var(--sa-300)"></i>مختلطة — جزء يُقاس آليًا وجزء يُثبَت بمستند</span>
+        <span><i style="background:var(--g-600)"></i>مستندية — استبيان وملفات من الجهة</span>
+      </div>
+    </div>
+    <div class="cards reveal" style="grid-template-columns:1fr 1fr">
+      <div class="card soft" style="background:var(--g-50)"><h3>ماذا تطلب المعايير المستندية؟ (62 معيارًا)</h3><p>في الإستراتيجية والحوكمة والعمليات والمخاطر والابتكار: <b style="color:var(--g-800)">سياسات وخطط معتمدة · محاضر لجان وقرارات · تقارير متابعة وقياس · اتفاقيات ومستندات تشغيلية</b> — لا يستطيع فاحص آلي إثباتها، وادعاء ذلك خداع.</p></div>
+      <div class="card tint"><h3>وكيف ينظمها مُطابق؟</h3><p>استبيان منظم على المعيار نفسه ← رفع الملف مربوطًا بمعياره ← مراجعة (وللمفتش أن يجيب نيابةً بسجل) ← ملف قياس مكتمل قبل الدورة الرسمية. <b style="color:var(--sa-800)">والمعايير المختلطة (18) تُعرض بطاقتها بالوجهين: ما قاسته الآلة وما أثبته المستند.</b></p></div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>هكذا يكتمل الـ89:</b>&nbsp; تسعةٌ تقيسها الآلة كليًا، و18 مناصفةً، و62 تُدار بالأدلة — كلٌّ بمساره الأمين، وعلى هذه الخريطة تعمل اليوم 128 قاعدة تغطي 17 معيارًا.</div>
+  </div>
+</section>
+
+<!-- 3 · البوابة الأولى: الهيئة -->
+<section class="slide" aria-label="بوابة الهيئة">
+  <header>
+    <p class="kicker">البوابة الأولى · الإشراف</p>
+    <h1 class="title">الهيئة: الرقابة كلها من شاشة واحدة</h1>
+    <div class="accent"></div>
+    <nav class="rail" aria-label="موقعك في الرحلة">
+      <span class="seg active"><span class="dot">1</span>بوابة الهيئة — الإشراف</span>
+      <span class="seg"><span class="dot">2</span>بوابة الجهة — الجاهزية</span>
+      <span class="seg"><span class="dot">3</span>بوابة التصميم — الوقاية</span>
+    </nav>
+  </header>
+  <div class="grow">
+    <div class="strip">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <div class="cap"><span class="n">1</span><div><b>كشف المملكة</b><span class="num">صورة حية لالتزام 130 جهة</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:82%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:55%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:30%"></i></div></div></div></div>
+        <div class="cap"><span class="n">2</span><div><b>حملة فحص قطاعية</b><span>عشرات المواقع بالتوازي — بالمعايير نفسها</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot d-r"></span><div class="ln" style="width:48%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:56%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:38%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:50%"></div><div class="ln g" style="width:16%"></div></div></div></div>
+        <div class="cap"><span class="n">3</span><div><b>نتائج مُسندة</b><span>كل ملاحظة بمعيارها ودليلها وخطورتها</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:45%"></div><div class="stage"><div class="mark" style="inset-inline-start:16%; top:24%; width:46%; height:40%"></div></div></div></div>
+        <div class="cap"><span class="n">4</span><div><b>تدقيق جهة بعينها</b><span>الملاحظة بموضعها على الشاشة وحلّها أولًا</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:64%"></div><div class="ln lt" style="width:48%"></div></div></div>
+        <div class="cap"><span class="n">5</span><div><b>إصدار ومتابعة</b><span>دورة حياة حتى التحقق — بمسار اعتراض عادل</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:76%"></div><div class="ln" style="width:60%"></div><div class="ln" style="width:68%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:32%"></div></div></div></div></div>
+        <div class="cap"><span class="n">6</span><div><b>تقرير موثق</b><span>بالأدلة لا بالانطباعات</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal"><b>الحصيلة:</b>&nbsp; رقابة مستمرة تقوم على الأدلة — بدل دورات متباعدة تقوم على الانطباعات.</div>
+  </div>
+</section>
+
+<!-- 3ب · لقطة حية: الملاحظات -->
+<section class="slide" aria-label="لقطة حية — الملاحظات">
+  <header>
+    <p class="kicker">من داخل المنصة — لقطة حية، لا تصميم</p>
+    <h1 class="title">هكذا تبدو الملاحظة فعلًا</h1>
+    <div class="accent"></div>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
+    <div class="shotframe reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 1.88))">
+      <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">تدقيق صفحة واحدة — موقع حكومي مباشر</span></div>
+      <img src="shots/01-page-audit.jpg" alt="تدقيق صفحة واحدة على موقع حكومي مباشر داخل مُطابق" alt="شاشة الملاحظات في مُطابق: قائمة ملاحظات عربية موسومة بمعايير DGA 2026، وبطاقة تفاصيل ملاحظة آلية الإبلاغ عن الفساد مع الإصلاح المقترح">
+    </div>
+    <div class="shotnotes reveal">
+      <span class="shotchip num"><b>44 ملاحظة</b> على صفحة واحدة — بالعربية، لكل منها شدتها ومعيارها</span>
+      <span class="shotchip">المختارة: <b>آلية الإبلاغ عن الفساد</b> — الوصف، ولماذا تهم، والإصلاح المقترح جاهزًا للنسخ</span>
+    </div>
+    <p class="shothush reveal">حُجبت هوية الموقع والجهة عمدًا — التزامًا بما عرضناه: النتائج التفصيلية لا تُعرض إلا بحضور الجهة أو بإذنها.</p>
+  </div>
+</section>
+
+<!-- 4 · البوابة الثانية: الجهة -->
+<section class="slide" aria-label="بوابة الجهة">
+  <header>
+    <p class="kicker">البوابة الثانية · الجاهزية</p>
+    <h1 class="title">الجهة الحكومية: تعرف موقفها قبل أن تُقاس</h1>
+    <div class="accent"></div>
+    <nav class="rail" aria-label="موقعك في الرحلة">
+      <span class="seg done"><span class="dot">1</span>بوابة الهيئة — الإشراف</span>
+      <span class="seg active"><span class="dot">2</span>بوابة الجهة — الجاهزية</span>
+      <span class="seg"><span class="dot">3</span>بوابة التصميم — الوقاية</span>
+    </nav>
+  </header>
+  <div class="grow">
+    <div class="strip">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
+        <div class="cap"><span class="n">1</span><div><b>ربط النطاقات</b><span>بالرابط فقط — لا تركيب ولا صلاحيات</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:52%"></div><div class="stage"><div class="scan"></div></div></div></div>
+        <div class="cap"><span class="n">2</span><div><b>فحص شامل</b><span>صفحةً صفحة، بمتصفح يرى ما يراه المستفيد</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%; height:8%"></div><div class="ln" style="width:72%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vdot d-o"></span><div class="ln lt" style="width:44%"></div></div></div></div>
+        <div class="cap"><span class="n">3</span><div><b>ملاحظات قابلة للتنفيذ</b><span>الحل المقترح يتصدر — بالموضع والخطورة</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="kan"><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard g"></div></div></div></div></div>
+        <div class="cap"><span class="n">4</span><div><b>معالجة موزعة</b><span>دورة فرز واضحة — من الإقرار إلى ادعاء الحل</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:88%"></div><div class="cb" style="height:62%"></div><div class="cb" style="height:40%"></div><div class="cb g" style="height:20%"></div></div></div></div>
+        <div class="cap"><span class="n">5</span><div><b>أثر مُثبت</b><span>إعادة الفحص تُظهر ما عولج فعلًا — بالأرقام</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:50%"></div></div></div></div>
+        <div class="cap"><span class="n">6</span><div><b>اكتمال الملف</b><span>تقييم ذاتي وأدلة — فلا مفاجآت في دورة القياس</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal"><b>الحصيلة:</b>&nbsp; جاهزية دائمة موثقة على مدار السنة — بدل استعداد موسمي متعجل قبل التقييم.</div>
+  </div>
+</section>
+
+<!-- 4ب · لقطة حية: النتيجة -->
+<section class="slide" aria-label="لقطة حية — النتيجة">
+  <header>
+    <p class="kicker">من داخل المنصة — لقطة حية، لا تصميم</p>
+    <h1 class="title">والنتيجة كما تراها الجهة — بصراحتها الكاملة</h1>
+    <div class="accent"></div>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
+    <div class="shotframe reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 2.1))">
+      <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">لوحة الجهة — نتيجة الفحص الآلي</span></div>
+      <img src="shots/02-entity-dashboard.jpg" alt="لوحة الجهة في مُطابق — نتيجة الفحص الآلي" alt="لوحة الجهة في مُطابق: نتيجة الفحص الآلي 34 من 100 موسومة يحتاج تحسين وثقة منخفضة، والتقييم الذاتي لم يُستكمل، مع فحص رابط فوري">
+    </div>
+    <div class="shotnotes reveal">
+      <span class="shotchip num"><b>34/100</b> — تقدير تشخيصي مُعلَن الحدود: «ثقة منخفضة» ما دام التقييم الذاتي لم يُستكمل</span>
+      <span class="shotchip num">مبنية على <b>57 تدقيقًا آليًا</b> — آخرها فحص حي أُجري أثناء إعداد هذا العرض</span>
+    </div>
+    <p class="shothush reveal">الصراحة في الواجهة نفسها: حدود الرقم مكتوبة بجواره — لا في الهامش.</p>
+  </div>
+</section>
+
+<!-- 5 · تتمة البوابة الثانية: التكامل -->
+<section class="slide" aria-label="التكامل">
+  <header>
+    <p class="kicker">البوابة الثانية · تتمة — كيف تتصل أنظمة الجهات</p>
+    <h1 class="title">تكامل بلا عبء اليوم — وتكامل أعمق على الخارطة</h1>
+    <div class="accent"></div>
+    <nav class="rail" aria-label="موقعك في الرحلة">
+      <span class="seg done"><span class="dot">1</span>بوابة الهيئة — الإشراف</span>
+      <span class="seg active"><span class="dot">2</span>بوابة الجهة — الجاهزية</span>
+      <span class="seg"><span class="dot">3</span>بوابة التصميم — الوقاية</span>
+    </nav>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,1.9vh,1rem)">
+    <div class="strip" style="margin-top:0; max-width:56rem; align-self:center; inline-size:100%">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="ln lt" style="width:70%"></div><div class="ln lt" style="width:62%"></div></div></div>
+        <div class="cap" style="justify-content:center"><div style="text-align:center"><b>مواقع الجهة ومنصاتها</b><span>كما هي — دون أي تعديل</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg" style="background:var(--sa-900); border-color:var(--sa-900)"><div class="tb" style="background:var(--sa-800); border-color:var(--sa-800)"><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i></div><div class="bd" style="align-items:center; justify-content:center"><svg style="inline-size:28%; border-radius:14%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div></div>
+        <div class="cap" style="justify-content:center"><div style="text-align:center"><b>مُطابق</b><span>فحص آلي · ملاحظات · أدلة · تقارير</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:38%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div></div></div></div>
+        <div class="cap" style="justify-content:center"><div style="text-align:center"><b>واجهة الهيئة</b><span>كشف شامل · حملات · متابعة</span></div></div>
+      </div>
+    </div>
+    <div class="cards" style="grid-template-columns:1fr 1fr">
+      <div class="phase reveal" style="background:var(--sa-50); border:1px solid var(--sa-200)">
+        <h4 style="color:var(--sa-800)">اليوم — تكامل بلا عبء</h4>
+        <ul style="color:var(--g-700)">
+          <li>الفحص خارجي بالكامل: لا تركيب، لا صلاحيات، لا أجهزة — يكفي النطاق المصرّح به</li>
+          <li>التقييم الذاتي ورفع الأدلة عبر المتصفح مباشرة</li>
+          <li>لذلك يبدأ أي برنامج تجريبي خلال أيام — لا شهور مشاريع تقنية</li>
+        </ul>
+      </div>
+      <div class="phase reveal" style="background:var(--g-50); border:1px solid var(--g-200)">
+        <h4 style="color:var(--g-800)">على الخارطة — تكامل أعمق اختياري</h4>
+        <ul style="color:var(--g-600)">
+          <li>الدخول عبر النفاذ الوطني الموحد</li>
+          <li>Webhooks وواجهات API لربط أنظمة الجهة وأدوات فرقها</li>
+          <li>الفحص داخل دورة التطوير CI/CD قبل النشر — بالشراكة مع فرق التنفيذ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · البوابة الثالثة: التصميم -->
+<section class="slide" aria-label="بوابة التصميم">
+  <header>
+    <p class="kicker">البوابة الثالثة · الوقاية</p>
+    <h1 class="title">التصميم: الامتثال قبل أول سطر كود</h1>
+    <div class="accent"></div>
+    <nav class="rail" aria-label="موقعك في الرحلة">
+      <span class="seg done"><span class="dot">1</span>بوابة الهيئة — الإشراف</span>
+      <span class="seg done"><span class="dot">2</span>بوابة الجهة — الجاهزية</span>
+      <span class="seg active"><span class="dot">3</span>بوابة التصميم — الوقاية</span>
+    </nav>
+  </header>
+  <div class="grow">
+    <div class="strip">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:14%; width:26%; border-radius:99px"></div><div class="ln" style="width:72%"></div></div></div></div>
+        <div class="cap"><span class="n">1</span><div><b>التصميم كالمعتاد</b><span>في فيجما — دون تغيير في طريقة العمل</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:66%"></div></div><div class="panel"><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:62%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:48%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:55%"></div></div></div></div></div></div>
+        <div class="cap"><span class="n">2</span><div><b>فحص فوري بمُطابق لفيجما</b><span class="num">6 فئات تدقيق تعكس المعايير</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:24%; width:46%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:70%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <div class="cap"><span class="n">3</span><div><b>معالجة في المصدر</b><span>التعديل في ملف التصميم — حيث يكون أرخص</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:60%"></div></div><div class="code"><div class="ln" style="width:70%"></div><div class="ln g" style="width:52%"></div><div class="ln" style="width:62%"></div></div></div></div></div>
+        <div class="cap"><span class="n">4</span><div><b>تسليم متوافق للتطوير</b><span>بمرجعية المعايير نفسها التي سيُقاس عليها</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit" style="grid-template-columns:1fr 1fr"><div class="art" style="gap:11%"><div class="shp" style="height:22%; width:52%"></div><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div><div class="stage"><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div></div></div></div>
+        <div class="cap"><span class="n">5</span><div><b>المرجعية نفسها بعد الإطلاق</b><span>يفحص مُطابق الموقع لاحقًا — فلا مفاجآت</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal"><b>الحصيلة:</b>&nbsp; أرخص ملاحظة هي التي لم تصل إلى الإنتاج أصلًا — الامتثال جزء من التصميم، لا تفتيش لاحق عليه.</div>
+  </div>
+</section>
+
+<!-- 6ب · لقطة حية: الإضافة داخل فيجما -->
+<section class="slide" aria-label="لقطة حية — داخل فيجما">
+  <header>
+    <p class="kicker">من داخل الإضافة — لقطة حية، لا تصميم</p>
+    <h1 class="title">وهكذا يُفحص التصميم — داخل فيجما نفسها</h1>
+    <div class="accent"></div>
+  </header>
+  <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
+    <div class="reveal" style="display:flex; gap:clamp(.6rem,1.4vw,1rem); justify-content:center; align-items:stretch">
+      <div class="shotframe" style="flex:0 1 auto; max-inline-size:min(42%, calc((100dvh - 21rem) * .84))">
+        <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">الإضافة — الرئيسية</span></div>
+        <img src="shots/03-figma-home.jpg" alt="الشاشة الرئيسية لإضافة مُطابق داخل فيجما" alt="واجهة إضافة مُطابق داخل فيجما: جاهز للفحص، فحص الصفحة أو التحديد، وما نتحقق منه: وصول WCAG AA و64 مكونًا معتمدًا و98 قاعدة توافق">
+      </div>
+      <div class="shotframe" style="flex:0 1 auto; max-inline-size:min(42%, calc((100dvh - 21rem) * .89))">
+        <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">الإضافة — نتيجة فحص ملف تصميم</span></div>
+        <img src="shots/04-figma-result.jpg" alt="نتيجة فحص ملف تصميم داخل إضافة مُطابق لفيجما" alt="نتيجة فحص ملف تصميم: 143 مشكلة منها 116 قابلة للإصلاح التلقائي، وبطاقة ارتفاع السطر غير مطابق بمرجع كود المنصات DGA-DS-011 والحالي 1.45 والمطلوب 1.5">
+      </div>
+    </div>
+    <div class="shotnotes reveal">
+      <span class="shotchip num"><b>143 مشكلة</b> في ملف تصميم واحد — منها <b>116</b> تُصلَح تلقائيًا بنقرة، قبل أن يُكتب أي سطر كود</span>
+      <span class="shotchip num">كل بطاقة بمرجعها: كود المنصات · <b>DGA-DS-011</b> — الحالي 1.45 والمطلوب 1.5، مع التوصية</span>
+    </div>
+    <p class="shothush reveal">لقطتان من الإضافة كما تعمل اليوم داخل فيجما — على ملف تصميم حقيقي.</p>
+  </div>
+</section>
+
+<!-- 7 · حكاية ملاحظة واحدة -->
+<section class="slide" aria-label="حكاية ملاحظة">
+  <header>
+    <p class="kicker">حيث تلتقي البوابات</p>
+    <h1 class="title">حكاية ملاحظة واحدة</h1>
+    <div class="accent"></div>
+    <p class="lead">خذوا ملاحظة واحدة — «زر أساسي لا يظهر بوضوح على الجوال» — وتتبعوها عبر البوابات الثلاث:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
+    <div class="thread reveal">
+      <div class="station card">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:40%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:64%"></div></div></div></div>
+        <span class="st-k num">المحطة 1 · في التصميم</span>
+        <h3>تُمنع قبل أن تولد</h3>
+        <p>يلتقطها مُطابق لفيجما في ملف التصميم — فتُعالج قبل أن تُبرمج، ولا تصل إلى الإنتاج أصلًا.</p>
+      </div>
+      <div class="station card">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:46%"></div><div class="stage"><div class="mark" style="inset-inline-start:20%; top:26%; width:42%; height:36%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <span class="st-k num">المحطة 2 · في التشغيل</span>
+        <h3>تُرصد وتُعالج ويُثبت الأثر</h3>
+        <p>إن وصلت إلى الإنتاج، يرصدها الفحص بموضعها وحلّها — فتُعالج، وتُثبت إعادةُ الفحص أن المعالجة نجحت فعلًا.</p>
+      </div>
+      <div class="station card">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span></div><div class="vrow"><span class="vcheck">✓</span><div class="ln g" style="width:44%"></div></div></div></div>
+        <span class="st-k num">المحطة 3 · في الإشراف</span>
+        <h3>تُتابَع حتى الإغلاق المتحقق</h3>
+        <p>تظهر للهيئة بدورة حياتها كاملة — من الرصد إلى التحقق، بمسار اعتراض عادل وسجل واحد.</p>
+      </div>
+    </div>
+    <div class="payoff reveal" style="margin-top:clamp(.4rem,1.4vh,.8rem)"><b>سجل واحد · حقيقة واحدة · ثلاث بوابات</b> — هذا ما يجعلها منظومة، لا ثلاث أدوات متجاورة.</div>
+  </div>
+</section>
+
+<!-- 7ب · ملخص الرحلات الثلاث -->
+<section class="slide" aria-label="ملخص الرحلات">
+  <header>
+    <p class="kicker">الخلاصة في جدول واحد</p>
+    <h1 class="title">الرحلات الثلاث — من يدخل، وماذا يحدث، وبمَ يخرج</h1>
+    <div class="accent"></div>
+  </header>
+  <div class="grow" style="gap:.6rem">
+    <div class="reveal" style="overflow-x:auto">
+      <table class="stable">
+        <thead><tr><th style="text-align:right">البوابة</th><th>من يدخل منها</th><th>ماذا يحدث فيها</th><th>ما الذي يخرج منها</th></tr></thead>
+        <tbody>
+          <tr><td><b>الهيئة — الإشراف</b></td><td>فرق القياس والإشراف</td><td>كشف شامل · حملات فحص · إصدار الملاحظات ومتابعة دورتها</td><td>قرار رقابي مبني على أدلة قابلة للمراجعة</td></tr>
+          <tr><td><b>الجهة — الجاهزية</b></td><td>الخدمات الرقمية والفرق التقنية</td><td>فحص مستمر · معالجة موزعة · أثر مُقاس بإعادة الفحص · تقييم ذاتي وأدلة</td><td>ملف قياس مكتمل — ودخول الدورة الرسمية بلا مفاجآت</td></tr>
+          <tr><td><b>التصميم — الوقاية</b></td><td>فرق تصميم التجربة</td><td>فحص التصميم في فيجما قبل التطوير — بست فئات تدقيق</td><td>خدمات تولد متوافقة — والملاحظة تُمنع قبل أن تولد</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="payoff reveal" style="margin-top:.2rem; background:var(--sa-50); color:var(--sa-900); border:1px solid var(--sa-200)"><b style="color:var(--sa-800)">والقاسم المشترك:</b> سجل واحد، ومعايير واحدة، وحقيقة واحدة — مهما اختلفت البوابة.</div>
+  </div>
+</section>
+
+<!-- 7ج١ · بصراحة: ما لا نفعله -->
+<section class="slide" aria-label="ما لا نفعله">
+  <header>
+    <p class="kicker">الحدود — معلنة لا مخفية</p>
+    <h1 class="title">بصراحة: ما لا نفعله</h1>
+    <div class="accent"></div>
+    <p class="lead">قبل أن نقترح الخطوة التالية، هذه حدودنا كما هي — معلنة داخل المنتج نفسه:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
+    <div class="cards" style="grid-template-columns:1fr 1fr">
+      <div class="card reveal" style="background:var(--g-50)"><h3>لا نقيس الأدلة التنظيمية آليًا</h3><p class="num">الـ62 معيارًا المستندية بتصنيف الكتالوج — وعلى رأسها منظورات الإستراتيجية والثقافة والعمليات والمخاطر والابتكار — لا يدّعي المحرك قياسها.</p><p class="cov"><b>وكيف تُغطى؟</b> بمسارها الصحيح: تقييم ذاتي منظم على المعايير + مكتبة أدلة مربوطة بها + مراجعة تفتيشية — تُدار بأمانة، لا تُقاس زيفًا.</p></div>
+      <div class="card reveal" style="background:var(--g-50)"><h3>لا نصدر درجات رسمية</h3><p>كل مؤشر تجميعي عندنا تشخيصي مُوسَم «تقدير من مُطابق».</p><p class="cov"><b>وما البديل؟</b> المؤشر التشخيصي يرتب الأولويات ويقود المعالجة — والدرجة الرسمية تبقى للهيئة وحدها بمنهجيتها: كلي / جزئي / عدم التزام.</p></div>
+      <div class="card reveal" style="background:var(--g-50)"><h3>لا نحل محل القياس الرسمي</h3><p>لا بديلًا عنه ولا موازيًا له.</p><p class="cov"><b>وما دورنا إذًا؟</b> نخدم الدورة الرسمية: تدخل الجهة نظام «قياس» بملف مكتمل وجاهزية موثقة — ومستقبلًا، تكاملٌ اختياري يوصل الإشارة المبكرة إلى الدورة نفسها.</p></div>
+      <div class="card reveal" style="background:var(--g-50)"><h3>لا نشترط تكاملًا تقنيًا للبدء</h3><p>الفحص خارجي بالكامل — يكفي النطاق المصرّح به.</p><p class="cov"><b>ومتى يُحتاج الأعمق؟</b> حين تريده الجهة: النفاذ وAPI وCI/CD اختيارية على الخارطة — عمقٌ يُضاف، لا شرطٌ للبدء.</p></div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>القاعدة:</b>&nbsp; كل حدٍّ معلن يقابله مسارٌ أمين يغطيه — فالثقة تُبنى على ما لا ندّعيه، بقدر ما تُبنى على ما نقدمه.</div>
+  </div>
+</section>
+
+<!-- 7ج · من هنا تبدأ الرحلة -->
+<section class="slide" aria-label="من هنا تبدأ">
+  <header>
+    <p class="kicker">الخطوة العملية</p>
+    <h1 class="title">من هنا تبدأ الرحلة — مسار البدء النموذجي</h1>
+    <div class="accent"></div>
+    <p class="lead">لأن الفحص خارجي بالكامل، البدء لا يحتاج مشروعًا تقنيًا — هذا هو المسار المعتاد لأي جهة تنضم:</p>
+  </header>
+  <div class="grow">
+    <div class="strip" style="max-width:64rem; align-self:center; inline-size:100%">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
+        <div class="cap"><span class="n">1</span><div><b>اليوم الأول</b><span>ربط النطاقات المصرّح بها — وأول فحص شامل يبدأ فورًا</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:34%"></div></div></div></div></div>
+        <div class="cap"><span class="n">2</span><div><b>الأسبوع الأول</b><span>خط الأساس واضح — وأول تقرير جاهزية بين يدي الجهة</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:85%"></div><div class="cb" style="height:58%"></div><div class="cb g" style="height:30%"></div></div></div></div>
+        <div class="cap"><span class="n">3</span><div><b>الشهر الأول</b><span>معالجة موزعة على الفرق — وأثر مُقاس بإعادة الفحص</span></div></div>
+      </div>
+      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:58%"></div></div></div></div>
+        <div class="cap"><span class="n">4</span><div><b>مع دورة القياس</b><span>ملف مكتمل — قياسًا آليًا وأدلةً منظمة، بلا مفاجآت</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal"><b>الاقتراح العملي:</b>&nbsp; برنامج تجريبي موجّه مع جهات مختارة — يبدأ خلال أيام، ويُقاس أثره بأرقام قبل وبعد — فمن يبدأ اليوم يقف أمام الدورة القادمة بأرقام مثبتة، لا بانطباعات.</div>
+  </div>
+</section>
+
+<!-- 7د · مؤشرات نجاح البرنامج التجريبي -->
+<section class="slide" aria-label="مؤشرات النجاح">
+  <header>
+    <p class="kicker">كيف نُحاسَب</p>
+    <h1 class="title">البرنامج التجريبي — بمؤشرات نجاح متفق عليها سلفًا</h1>
+    <div class="accent"></div>
+    <p class="lead">لا نطلب تجربة مفتوحة — نقترح مؤشرات تُقاس قبل البرنامج وبعده، ونُحاسَب عليها:</p>
+  </header>
+  <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
+    <div class="cards" style="grid-template-columns:repeat(4,1fr)">
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:45%"></div><div class="cb g" style="height:80%"></div></div></div></div>
+        <div class="cap"><span class="n">1</span><div><b>الدرجة التشخيصية قبل/بعد</b><span>قياس اليوم الأول مقابل نهاية الدورة — بالمنهجية الموسومة نفسها</span></div></div>
+      </div>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:46%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div></div></div>
+        <div class="cap"><span class="n">2</span><div><b>ملاحظات مغلقة بتحقق</b><span>ليس «قيل إنها حُلّت» — بل تحقق آلي بإعادة الفحص</span></div></div>
+      </div>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
+        <div class="cap"><span class="n">3</span><div><b>زمن الاكتشاف ← الإغلاق</b><span>متوسط عمر الملاحظة عبر دورة حياتها الموثقة بالطوابع الزمنية</span></div></div>
+      </div>
+      <div class="frame reveal">
+        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%"></div><div class="vgrid"><div class="cell g"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <div class="cap"><span class="n">4</span><div><b>التغطية</b><span>الصفحات والنطاقات المفحوصة، والمعايير المفعّلة قياسًا وأدلةً</span></div></div>
+      </div>
+    </div>
+    <div class="payoff reveal" style="margin-top:0"><b>والأهم:</b>&nbsp; الأرقام تُلتقط من المنصة نفسها — فتقييم نهاية البرنامج لا يحتاج نقاشًا، بل قراءة.</div>
+  </div>
+</section>
+
+<!-- 8 · الختام -->
+<section class="slide dark" aria-label="الختام">
+  <div style="position:absolute; inset-inline-start:-8%; bottom:-32%; inline-size:40vw; aspect-ratio:1; background:var(--sa-900); opacity:.5; border-radius:22%"></div>
+  <div class="grow" style="position:relative">
+    <svg style="inline-size:clamp(2.4rem,6vh,3.4rem); border-radius:18%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <h1 class="reveal" style="font-size:clamp(1.8rem,6.2vh,3.2rem); font-weight:700; line-height:1.35; margin-top:clamp(.8rem,3vh,1.4rem)">منظومة واحدة…<br>تُفتح من ثلاث بوابات.</h1>
+    <p class="reveal" style="font-size:clamp(.95rem,2.6vh,1.3rem); color:var(--sa-200); margin-top:.7rem">شكرًا لكم — ونسعد بعرض أي بوابة مباشرة على المنصة</p>
+    <div class="reveal" style="width:4.6rem; height:4px; background:var(--sa-500); border-radius:2px; margin-block:clamp(.8rem,2.6vh,1.2rem)"></div>
+    <p class="reveal" style="font-size:clamp(.78rem,2vh,.98rem); color:var(--sa-300)">آية أحمد &nbsp;·&nbsp; مُطابق — Mutabiq Cloud</p>
+  </div>
+</section>
+
+</main>
+
+<div id="progress" role="presentation"></div>
+<div id="hud">
+  <span id="counter" class="num">1 / 22</span>
+  <span class="brand"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> مُطابق — رحلات الاستخدام · هيئة الحكومة الرقمية</span>
+</div>
+<div id="hint">← التالي &nbsp;·&nbsp; → السابق &nbsp;·&nbsp; F ملء الشاشة &nbsp;·&nbsp; النقر يفتح التفاصيل فقط</div>
+<button id="homeBtn" title="العودة إلى البداية" aria-label="العودة إلى البداية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="4.5" x2="19" y2="4.5"/><line x1="12" y1="20" x2="12" y2="9"/><path d="M6.5 14.5 L12 9l5.5 5.5"/></svg></button>
+<div id="veil"></div>
+<aside id="drawer" dir="rtl" aria-hidden="true">
+  <div class="dh">
+    <button id="dx" aria-label="إغلاق">✕</button>
+    <button id="dback">→ عودة إلى المجموعة</button>
+    <div class="dk"><span class="idchip num" id="dchip"></span></div>
+    <h4 id="dtitle"></h4>
+    <p class="dm" id="dmeta"></p>
+    <div id="dnav"><button data-dnav="1" aria-label="المعيار التالي">‹</button><span id="dpos" class="num"></span><button data-dnav="-1" aria-label="المعيار السابق">›</button></div>
+  </div>
+  <div id="dbody"></div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+  const slides=[...document.querySelectorAll("section.slide")];
+  const counter=document.getElementById("counter");
+  const progress=document.getElementById("progress");
+  const hint=document.getElementById("hint");
+  let i=0, hinted=false;
+  function go(n,push=true){
+    n=Math.max(0,Math.min(slides.length-1,n));
+    if(n===i && slides[i].classList.contains("active")) return;
+    slides.forEach((s,k)=>s.classList.toggle("active",k===n));
+    i=n;
+    counter.textContent=(i+1)+" / "+slides.length;
+    progress.style.width=(((i+1)/slides.length)*100)+"%";
+    document.body.classList.toggle("on-dark", slides[i].classList.contains("dark"));
+    document.body.classList.toggle("on-first", i===0);
+    document.body.classList.toggle("on-last", i===slides.length-1);
+    if(push){ try{ history.replaceState(null,"","#"+(i+1)); }catch(_e){} }
+    if(!hinted && i>0){ hint.classList.add("gone"); hinted=true; }
+  }
+  const next=()=>go(i+1), prev=()=>go(i-1);
+  const homeBtn=document.getElementById("homeBtn");
+  homeBtn.addEventListener("click",e=>{ e.stopPropagation(); closeDrawer(); go(0); });
+  document.body.classList.toggle("on-first", i===0);
+  document.body.classList.toggle("on-last", i===slides.length-1);
+  addEventListener("keydown",e=>{
+    if(document.body.classList.contains("drawer-open")){
+      if(e.key==="Escape") closeDrawer();
+      return;
+    }
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    switch(e.key){
+      case "ArrowLeft": case " ": case "PageDown": case "Enter": e.preventDefault(); next(); break;
+      case "ArrowRight": case "PageUp": case "Backspace": e.preventDefault(); prev(); break;
+      case "Home": go(0); break;
+      case "End": go(slides.length-1); break;
+      case "f": case "F": document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); break;
+    }
+  });
+  let tx=null,ty=null;
+  addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  addEventListener("touchend",e=>{
+    if(tx===null) return;
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)) (dx>0?next():prev());
+    tx=ty=null;
+  },{passive:true});
+  let lock=false;
+  addEventListener("wheel",e=>{
+    if(lock || Math.abs(e.deltaY)<28) return; lock=true; setTimeout(()=>lock=false,750);
+    (e.deltaY>0?next():prev());
+  },{passive:true});
+  // شريط الفصول وبطاقات الخريطة قابلة للنقر — تقفز إلى بوابتها
+  document.querySelectorAll(".rail .seg").forEach(s=>{
+    const d=s.querySelector(".dot"); if(!d) return;
+    const map={ "1":"12", "2":"14", "3":"17" };
+    const t=map[d.textContent.trim()];
+    if(t) s.setAttribute("data-go",t);
+  });
+  addEventListener("click",e=>{
+    if(document.body.classList.contains("drawer-open")){
+      if(e.target.closest("#drawer")){
+        const nv=e.target.closest("[data-dnav]");
+        if(nv && curStd){
+          const i=ORDER.indexOf(curStd);
+          openStd(ORDER[(i+parseInt(nv.dataset.dnav,10)+ORDER.length)%ORDER.length], false);
+          return;
+        }
+        const li=e.target.closest("li[data-std]");
+        if(li) openStd(li.dataset.std, true);
+        return;
+      }
+      // النقر على عنصر تفاعلي آخر والدرج مفتوح = تبديل المحتوى، لا إغلاق
+      const sw=e.target.closest("[data-std],[data-grp],[data-doc],[data-cat]");
+      if(sw){
+        if(sw.dataset.std) openStd(sw.dataset.std, false);
+        else if(sw.dataset.grp) openGrp(sw.dataset.grp);
+        else if(sw.dataset.doc) openDoc(sw.dataset.doc);
+        else openCat(sw.dataset.cat);
+        return;
+      }
+      closeDrawer(); return;
+    }
+    const sd=e.target.closest("[data-std]");
+    if(sd){ openStd(sd.dataset.std, false); return; }
+    const gp=e.target.closest("[data-grp]");
+    if(gp){ openGrp(gp.dataset.grp); return; }
+    const dc=e.target.closest("[data-doc]");
+    if(dc){ openDoc(dc.dataset.doc); return; }
+    const ct=e.target.closest("[data-cat]");
+    if(ct){ openCat(ct.dataset.cat); return; }
+    if(e.target.closest("a,button,input,textarea,select")) return;
+    const g=e.target.closest("[data-go]");
+    if(g){ go(parseInt(g.dataset.go,10)-1); return; }
+    // لا تنقّل بالنقر على الفراغ — التنقل بالأسهم والمسطرة والسوايب فقط،
+    // حتى لا تقفز السلايدات أثناء الإشارة والنقاش.
+  });
+
+  // ── درج تفاصيل المعايير — البيانات من قاعدة الإنتاج مباشرة ──
+  const STD_DATA={"5.12.2":{"t":"تنفيذ ومتابعة أعمال إدارة الخدمات التقنية","p":"تقنية المعلومات","rc":3,"reqs":["أتمتة جميع عمليات إدارة الخدمات التقنية والبنية التحتية بالاستفادة من التقنيات والأنظمة الحديثة في هذا المجال.","توثيق نتائج جميع مراحل تطوير التقنيات الداعمة لأعمال الحكومة الرقمية والاحتفاظ بها كمرجعية لعمليات التطوير والتحسين المستمر.","متابعة مؤشرات قياس الأداء الرئيسية لحوكمة تقنية المعلومات المطورة وفق ضوابط حوكمة تقنية المعلومات الصادرة من الهيئة، وإصدار تقارير الأداء الدورية.","متابعة فعالية اتفاقيات مستوى الخدمة التشغيلية الداخلية وقياسها وتقييمها بشكل دوري (سنوياً على الأقل).","استضافة مواقع الجهة الإلكترونية ونطاقاتها وأنظمتها ومعلوماتها وخدماتها داخل المملكة.","وضع الضوابط والقيود الإلكترونية التي تحد من تحميل منسوبي الجهة ملفات شخصية كبيرة، أو برامج غير معتمدة إلا حسب ما يتوافق مع اللوائح ذات العلاقة، ومشاركتها مع منسوبي الجهة.","تطوير وتنفيذ خطة تدقيق داخلي على تقنية المعلومات وفقاً لضوابط حوكمة تقنية المعلومات الصادرة من الهيئة ووضع خطة معالجة بشأنها واعتمادها من أصحاب الصلاحية في الجهة."]},"5.14.2":{"t":"تنفيذ الارتباط بالأنظمة والخدمات المشتركة","p":"الحكومة الشاملة","rc":3,"reqs":["تنفيذ خطط الارتباط وفق الآليات والجداول الزمنية المعتمدة وإصدار تقارير بذلك.","تفعيل المورد التقني المشترك لخدمة النفاذ الوطني الموحد في جميع المنصات والتطبيقات الحكومية التي تقدم خدمات رقمية، وحصر الاستفادة من خدمات الهوية الرقمية للأفراد عبر منظومة النفاذ الوطني الموحد.","تفعيل المورد التقني المشترك لخدمة الدفع الإلكتروني المقدَّمة من وزارة المالية في جميع المنصات والتطبيقات الحكومية التي تقدم خدمات رقمية تتطلب دفع مقابل مالي أو رسوم لتنفيذ الخدمة، وتمكين الدفع بالبطاقات البنكية من منصات الجهة الحكومية مباشرة.","الاستفادة من الخدمات المتوفرة في البوابة الإلكترونية الموحدة للمشتريات الحكومية \"اعتماد\".","الارتباط بمنظومة الرقابة الإلكترونية بالديوان العام للمحاسبة \"شامل\".","إصدار التقارير الدورية لمتابعة الارتباط بكل خدمة/ نظام، بما يشمل كحد أدنى الآتي:","— حجم البيانات المتبادلة.","— تحليل أوقات ذروة الاستخدام.","— عدد العمليات المنفذة والمرفوضة.","— حالات تذاكر الدعم المرفوعة.","[وزارة المالية · سدايا · ديوان المحاسبة · الداخلية] نشر تعليمات واضحة حول إجراءات الاستفادة من الأنظمة والخدمات المشتركة على منصاتها الرقمية، على أن تتضمن - بحد أدنى- الآتي:","— أهلية الاستخدام واشتراطات ومتطلبات الارتباط والاستفادة من المنصة.","— إجراءات تقديم طلبات الارتباط والاستفادة من المنصة.","[وزارة المالية · سدايا · ديوان المحاسبة · الداخلية] تحديد آلية استقبال طلبات الارتباط والاستفادة من الأنظمة والخدمات المشتركة، واتخاذ القرار بشأن تلك الطلبات ضمن إطار زمني لا يزيد عن عشرة أيام عمل من تاريخ تقديم الطلب، مع الالتزام بالآتي:","— أن تكون آلية استقبال طلبات الارتباط مؤتمتة.","— توفير الدعم الفني اللازم للجهة الحكومية المستفيدة من خلال أكثر من قناة اتصال إلى حين استكمال الارتباط والاستفادة من المنصة في حال قبول الطلب.","— اعتماد تكليف مسؤول النظام المرشح من الجهة الحكومية المستفيدة للربط خلال الفترة المحددة.","— إبلاغ الجهة الحكومية المستفيدة بمسببات قرار الرفض خلال الفترة المحددة، وذلك في حال عدم قبول طلب الارتباط ضمن إطار زمني يتم الاتفاق عليه بين الطرفين.","— تحديد المدة الزمنية اللازمة للرد على الاستفسارات الداخلية وطلبات الدعم من موظفي الجهة الحكومية المستفيدة.","[وزارة المالية · سدايا · ديوان المحاسبة · الداخلية] إدراج اتفاقية الاستخدام متضمنة ما يترتب على إساءة استخدام النظم والموارد المعلوماتية والروابط الإلكترونية للأنظمة واللوائح ذات العلاقة.","[وزارة المالية · سدايا · ديوان المحاسبة · الداخلية] إعداد اتفاقيات مستوى الخدمة (SLA) لضمان توافر النظام على مدار الساعة واستدامة وتوافر الخدمة؛ من خلال أكثر من قناة إلكترونية؛ لتزويد الجهات الحكومية المستفيدة بالخدمة، وإعداد وثائق إجراءات التشغيل لجميع العمليات، وتفصيل اتفاقيات مستوى الخدمات الخاصة بخدمات الدعم على المنصة."]},"5.15.3":{"t":"حوكمة وتسجيل النطاقات الحكومية الرقمية","p":"الحكومة الشاملة","rc":1,"reqs":["تسجيل أسماء نطاقات المواقع الإلكترونية الخاصة بالجهة، وفق ضوابط تسجيل وإدارة النطاقات والمنصات والخدمات الحكومية الرقمية الصادرة من هيئة الحكومة الرقمية.","التزام الجهة باستعمال نطاق موحد ولا يسمح للجهة بحجز نطاقات متعددة إلا عند وجود مبررات وافقت عليها هيئة الحكومة الرقمية.","التزام الجهة بالنطاق الرئيسي بالتفريع المعتمد لما ورد في الضوابط مع الحصول على شهادة تسجيل منصة للنطاق في منصة \"رقمي\".","إغلاق وحذف النطاقات غير النشطة المحجوزة للجهة التي لا يتم استخدامها.","تبني الإصدار السادس من بروتوكول الإنترنت (IPv6)، وتفعيل خاصية الامتداد الآمن لنظام أسماء النطاقات (DNSSEC)؛ لحماية النطاقات والتقليل من المخاطر والهجمات الإلكترونية."]},"5.15.4":{"t":"نظام التصميم الوطني الموحّد (كود المنصات)","p":"الحكومة الشاملة","rc":11,"reqs":["تطبيق متطلبات نظام التصميم الوطني الموّ حد (كود المنصات) في جميع المنصات والتطبيقات والمواقع الإلكترونية التابعة للجهة.","تنفيذ متطلبات إصدار شهادة الجودة الصادرة من هيئة الحكومة الرقمية."]},"5.16.1":{"t":"وضع آلية لقياس جودة الخدمات الرقمية","p":"القنوات والخدمات","rc":1,"reqs":["إعداد دراسة لقياس جودة الخدمات الرقمية على أن تشمل ما يأتي:","— تحديد معايير وإطار عمل لجودة الخدمات الرقمية لتقييمها أثناء تقديم الخدمات بشكل دوري وفق هذه المعايير.","— اعتماد المؤشرات التي تقيس المعايير المُختارة، على أن تكون تلك المؤشرات قابلة للقياس رقميًّا في مجملها.","— تحديد آلية وضع مستهدفات مستويات التشغيل والخدمة وآلية قياسها."]},"5.17.1":{"t":"التخطيط لإتاحة وتحسين الخدمات من خلال القنوات الرقمية","p":"القنوات والخدمات","rc":1,"reqs":["حصر وتسجيل جميع الخدمات الحكومية غير المؤتمتة لدى الجهة على منصة \"رقمي\" (خدمة تسجيل الخدمات غير المؤتمتة)، وتحديث بياناتها بشكل مستمر.","إعداد وتحديث خطة لإتاحة الخدمات لجميع المستفيدين من خلال القنوات الرقمية المناسبة (شاملة لمركز الاتصال) بحيث تشمل ما يأتي:","— قائمة بالخدمات الرقمية التي تقدمها الجهة، أو التي سيتم إطلاقها من خلال القنوات الرقمية.","— تحديد القنوات الرقمية المناسبة لإطلاق كل خدمة من الخدمات بما فيها القنوات البديلة الموَّجهة للأشخاص ذوي الإعاقة وكبار السن، إن لم تمكنهم القنوات الحالية من الوصول إلى جميع الخدمات الحكومية، الجدول الزمني لإطلاق هذه الخدمات.","— مؤشرات الأداء المعتمدة لقياس أداء كل خدمة من هذه الخدمات من خلال القنوات الرقمية (مقاييس أداء الأعمال التي تفيد الإدارات المسؤولة).","[ملحق 7.6] إعداد ورفع الخطة التنفيذية للحزمة الثالثة المقرر إطلاقها في 2026/7/1م؛ لإتاحة خدمات التطبيقات الحكومية عن طريق بوابة توكلنا، بحيث تكون مستوفية للتعميم الصادر بهذا الشأن."]},"5.17.2":{"t":"تنفيذ خطط إتاحة الخدمات على القنوات الرقمية وتحسينها","p":"القنوات والخدمات","rc":39,"reqs":["إطلاق الخدمات الحكومية غير المؤتمتة المسجلة من خلال منصة \"رقمي\" (خدمة تسجيل الخدمات غير المؤتمتة) وفق التواريخ المستهدفة، مع تأكيد الإطلاق من خلال المنصة، على ألا يتجاوز موعد إطلاق جميع الخدمات تاريخ 2026/12/31م.","تنفيذ خطة إتاحة الخدمات عبر القنوات الرقمية (شاملة لمركز الاتصال).","إعداد دليل شامل للخدمات على منصة الجهة، يقدم معلومات واضحة حول الخدمات الرقمية بحيث تتواءم مع كافة الحقول المطلوبة في النسيج الرقمي، مع مراعاة توفير المحتوى باللغتين العربية والإنجليزية، واعتماد مسميات واضحة وذات معنى للخدمات، دون استخدام الاختصارات التقنية أو العلامات التجارية أو الأسماء التسويقية.","إتاحة الخدمات الرقمية لجميع شرائح المستفيدين، وضمان وصول الأشخاص ذوي الإعاقة وكبار السن لها.","حصر وتسجيل كافة الخدمات الرقمية ومعلوماتها في الخدمة المخصصة لذلك على منصة \"رقمي\" وتحديثها بشكل مستمر وبما يشمل الخدمات المقدمة عبر التطبيقات الحكومية.","ربط الخدمات الرقمية بنظم قياس رضا المستفيدين بشكل آلي، وتجهيز آلية لإتاحة بياناتها وإحصاءاتها؛ تمهيدًا لإتاحتها للجهات ذات العلاقة بشكل رقمي.","متابعة الخدمات التي تم إطلاقها، وإصدار التقارير الدورية عن مؤشرات الأداء المعتمدة لكل خدمة من الخدمات، وفي كل قناة من قنوات مركز الاتصال (الصوت، البريد، المحادثات الفورية، الفيديو للصم).","دراسة وتحليل الخدمات بشكل مستمر ومدى إمكانية تقديمها من خلال مختلف القنوات الإلكترونية، واتخاذ الخطوات اللازمة لتحسين الخدمات وزيادة الاستفادة من القنوات الإلكترونية.","تضمين إحصائيات في التقارير السنوية للجهة عما قامت به في شأن إتاحة وتحسين الخدمات، بحيث تشمل ما يأتي:","— الوقت المستغرق لإنجاز الخدمات للمستفيدين.","— رضا المستفيدين عن الخدمات الرقمية المقدَّمة.","[ملحق 7.6] إتاحة خدمات التطبيقات على تطبيق \"توكلنا\"، بحيث تكون مستوفية للتعميم الصادر بهذا الشأن."]},"5.17.4":{"t":"تبني الخدمات الرقمية الاستباقية للمستفيد الخارجي","p":"القنوات والخدمات","rc":1,"reqs":["تقديم (30%) أو (10) خدمات رقمية -أيهما أقل- من إجمالي الخدمات الرقمية التي تقدمها الجهة للمستفيد الخارجي بشكل استباقي خلال دورة قياس (2026م).","تقديم ما لا يقل عن (30%)، من إجمالي الخدمات الرقمية المقدمة للمستفيد الخارجي بدون نماذج (Pre-filled)، من خلال استرجاع البيانات تلقائيًا من الأنظمة ذات العلاقة بالاعتماد على مبدأ \"طلب البيانات لمرة واحدة\"، وعرض ملخص للمستفيد للموافقة فقط.","متابعة تحسين تقديم الخدمات الرقمية للمستفيد الخارجي، وإصدار تقارير توضح نسب تبني الخدمات الاستباقية، والخدمات بدون نماذج إلى إجمالي الخدمات المقدمة للمستفيد الخارجي بما يشمل قياس مؤشرات الأداء، ومعدلات إتمام الخدمات، وزمن الاستجابة لجميع الخدمات في جميع القنوات."]},"5.17.5":{"t":"تكامل واتساق قنوات تقديم الخدمة","p":"القنوات والخدمات","rc":7,"reqs":["التكامل بين قنوات تقديم الخدمة بما يمكِّن المستفيد من تنفيذ خدماته دون انقطاع من خلال مختلف القنوات المستخدمة لتقديم الخدمة نفسها.","إتاحة الخدمات بشكل متسق عبر قنوات متعددة وفقًا لدراسة ملاءمة القنوات لشرائح المستخدمين ومدى إلمامهم بالتقنية.","إتاحة الوصول لمواقع وبوابات الجهة من مختلف الأجهزة والمتصفحات وفقًا لمبدأ التصميم (RWD).","تضمين مراكز رعاية المستفيدين كقنوات تقديم الخدمة وربطها بنظم إدارة علاقات المستفيدين."]},"5.18.1":{"t":"إتاحة القنوات وطرح موضوعات وفرص المشاركة الإلكترونية","p":"مركزية المستفيد","rc":2,"reqs":["حصر القنوات الإلكترونية اللازمة والملائمة للمستفيدين، التي تمكنهم من مشاركة آرائهم وملحوظاتهم ومقترحاتهم حول الخدمات المقدمة؛ بما يشمل عرض قنوات التواصل الاجتماعي والتطبيق الرسمي.","نشر استشارات عامة متعلقة بالجهة عبر منصة \"تفاعل\" بشكل ربعي، على أن تشمل كل استشارة مراحل: الطرح، والتمكين،وعرض النتائج.","نشر مبادرات للتطوير المشترك والابتكار المتعلقة بالخدمات والمنصات والتطبيقات عبر منصة \"تفاعل\" بشكل ربعي، على أن تشمل كل مبادرة مراحل: الطرح، والتمكين، وعرض النتائج.","وضع آلية معتمدة للاستفادة من آراء ومشاركات المستفيدين تشمل تطوير مسار عمل ( work flow diagram) ونقاط الاتصال واتخاذ القرار، لمعالجة ملحوظاتهم ومقترحاتهم وفقًا للتصنيفات المختلفة ومؤشرات الأداء.","تحديد مؤشرات أداء للرد على الملحوظات وإشعار المستفيد بالوقت المطلوب لدراسة الملحوظة أو المقترح.","تطوير الموقع الإلكتروني للجهة ليتضمن أدوات تقنية تمكّن مختلف شرائح المستفيدين من المشاركة بفاعلية، بما يشمل تخصيص قسم مخصص للمشاركة الإلكترونية، وتمكين سهولة المشاركة عبر وسائل التواصل الاجتماعي، وبما يدعم تطبيق \"ضوابط المشاركة الإلكترونية\"."]},"5.18.2":{"t":"متابعة مشاركات المستفيدين","p":"مركزية المستفيد","rc":4,"reqs":["المتابعة المستمرة والدورية لمشاركات المستفيدين ورصد جميع الآراء، والمشاركات، والشكاوى، والمقترحات من جميع القنوات.","إشعار المستفيد من خلال النظام برقم مرجعي للملاحظة أو المقترح أو الشكوى ونتائج الدراسة.","تفعيل خدمة \"بلاغ رقمي\" لدى الجهة الحكومية والإعلان عنها من خلال إحدى القنوات الرسمية المعتمدة لدى الجهة الحكومية.","[ملحق 7.6] معالجة البلاغات الرقمية المقَّدمة من هيئة الحكومة الرقمية وفقًا لاتفاقية مستوى الخدمة ، على ألا تتجاوز نسبة البلاغات المصعدة عبر خدمة البلاغ الرقمي (7%) من إجمالي البلاغات الواردة للجهة في المستوى الأول خلال دورة القياس."]},"5.19.2":{"t":"تنفيذ برنامج تعزيز العلاقة مع المستفيد","p":"مركزية المستفيد","rc":1,"reqs":["تنفيذ البرامج والحملات والأنشطة التسويقية المعتمدة، لرفع وعي المستفيدين بالخدمات الرقمية للجهة وطرق الحصول عليها عبر مختلف القنوات.","استخدام الأدوات الرقمية في رصد وقياس مؤشرات الأداء المعتمدة التي تقيس مستهدفات برنامج تعزيز العلاقة مع المستفيد ومدى تحقيقها للأهداف المأمولة، وقياس مدى التقدم في تنفيذ هذه البرامج.","دراسة وتحليل التقارير الدورية الناتجة عن تنفيذ برنامج تعزيز العلاقة مع المستفيد والاستفادة منها في تطوير أنشطتها التسويقية، وتحسين مستوى خدماتها المقدَّمة واتخاذ القرارات المناسبة في هذا الصدد."]},"5.20.3":{"t":"دراسة تجربة المستفيد لتحسينها","p":"مركزية المستفيد","rc":1,"reqs":["إعداد دراسة لتجربة المستفيد الرقمية بهدف التحسين بحيث تشمل:","— أهداف عملية التحسين بناءً على دراسة تجربة المستفيد وتقييم الرضا.","— قائمة الأدوات التي تستخدم لقياس تجربة المستفيد بما يشمل استخدام التقنيات الناشئة في قياس مؤشرات الأداء المرتبطة بقياس وتحسين تجربة المستفيد .","— منهجيات قياس أثر تطبيق ممارسات مركزية المستفيد وتطوير تجربة المستفيد."]},"5.21.1":{"t":"موثوقية وأمن الموقع الإلكتروني للجهة","p":"كفاءة المواقع وجودة المحتوى الرقمي","rc":20,"reqs":["ضمان موثوقية نطاق الموقع الإلكتروني، عن طريق الالتزام بالآتي:","— تقليل الأخطاء والتحذيرات المكتشفة في الصفحات.","— ضمان التوجيه التلقائي للمستخدمين إلى النسخة المناسبة وفق لغتهم أو موقعهم الجغرافي.","تفعيل شهادة الأمان (SSL)، والتأكد من سلامة بروتوكولات جميع صفحات الموقع بحيث تعمل ضمن الاتصال الآمن (HTTPS)."]},"5.21.2":{"t":"كفاءة الموقع الإلكتروني وتحسين ظهوره على محركات البحث","p":"كفاءة المواقع وجودة المحتوى الرقمي","rc":13,"reqs":["تطوير مستوى جودة الموقع الإلكتروني من الجانب التقني، وذلك عن طريق مراقبة الأداء وتحسين مؤشرات التصفح، وتقليل حجم الصفحات، وضمان قابلية الزحف (Crawl) إلى الموقع الإلكتروني، والالتزام بالاشتراطات التقنية.","تحسين ظهور الموقع الإلكتروني في محركات البحث عبر تهيئة الموقع الإلكتروني عن طريق اختيار الكلمات المفتاحية المناسبة، وضمان وجود خريطة الموقع، واستعراض الروابط بصورة واضحة، وصياغة عناوين مختصرة، إضافةً إلى توفير صفحة تعريفية بالجهة على منصات موثوقة مثل ويكيبيديا وخرائط (Google)."]},"5.22.1":{"t":"القيمة المضافة للمحتوى الرقمي","p":"كفاءة المواقع وجودة المحتوى الرقمي","rc":4,"reqs":["توافر المعلومات اللازمة للجهة على موقعها الإلكتروني، وتشمل ما يأتي:","— المرجعية الإدارية للأجهزة الحكومية غير المستقلة.","— أرقام الاتصال، والبريد الإلكتروني، والعنوان الوطني، وأي وسيلة إلكترونية إضافية، للتواصل مع المستفيدين من خدمات الجهة الحكومية.","— إشعار حماية بيان الخصوصية، وحقوق الملكية، وبيان إخلاء المسؤولية شاملاً عدم تحمل الجهة لأي مسؤولية نظامية عن استخدام البيانات أو المعلومات المنشورة في مواقعها الإلكترونية.","— اتفاقية الاستخدام متضمنة ما يترتب على إساءة استخدام النظم والموارد المعلوماتية والبوابة الإلكترونية للأنظمة واللوائح ذات العلاقة.","— أبرز الخدمات والفعاليات في مجال عملها.","— التعريف الشامل للبرامج والمبادرات المتعلقة برؤية المملكة 2030، وعرض الإنجازات التي جرى تنفيذها وتوضيح التابعة للرؤية.","— شعار الرؤية ورابط مباشر لها.","— نسخة حديثة من المعلومات اللازمة للخدمات المقدَّمة للمستفيدين ومراعاة الطابع الزمني، وحقوق الطبع لتحديث الموقع ومدة التحديث.","— معلومات حسابات شبكات التواصل الاجتماعي الخاصة بها.","— مراعاة دعم تعدد اللغات مع الحفاظ على ثبات المحتوى والمعنى عند التبديل بينها.","نشر الأنظمة واللوائح ذات العلاقة بعمل الجهة.","نشر معلومات عامة عن الجهة الحكومية ونشأتها ومهامها ورؤيتها ورسالتها وأهدافها والأنظمة والسياسات ذات العلاقة بمجال إشرافها والهيكل التنظيمي ومعلومات القيادات العليا مع إبراز الفرص المهنية والوظيفية المتاحة ضمن نطاق عملها.","نشر روابط للمواقع الخاصة بأي مؤسسات/ وكالات حكومية وطنية/ محلية ذات العلاقة بعمل الجهة.","إتاحة المحتوى على الموقع بأسلوب تفاعلي عن طريق:","— تضمين مقاطع الفيديو والرسوم المعلوماتية التوضيحية وغيرها.","— عدم استخدام صور النص.","— عدم تكرار المحتوى.","— ضمان خلو الموقع من الصفحات الخالية من المحتوى.","— يكون شعار الجهة متوفرًا بخاصية الرجوع للصفحة الرئيسية."]},"5.22.2":{"t":"الجودة التحريرية للمحتوى الرقمي","p":"كفاءة المواقع وجودة المحتوى الرقمي","rc":16,"reqs":["ضمان تنظيم المحتوى من خلال الالتزام بالآتي:","— تيسير التنقل بين العناوين والفقرات.","— التأكد من أن الصور والأشكال المستخدمة معبرة بصورة واضحة وأن تكون ذات جودة.","الالتزام باشتراطات إنتاج وتدقيق المحتوى في المواقع الإلكترونية، بما يشمل:","— خلو النصوص من الأخطاء الإملائية واللغوية.","— استخدام المصطلحات والاختصارات بصورة مناسبة وواضحة.","— توحيد النبرة التحريرية.","التأكد من تناسق وتناغم الترويسة والتذييل في كافة الصفحات للموقع الإلكتروني للجهة مع ثبات الروابط المهمة بما يشمل:","— السياسات.","— اتصل بنا.","— خدمة العملاء.","— الأسئلة الأكثر شيوعاً."]}};
+  // ملخص بشري أمين لما تفحصه قواعدنا فعليًا على كل معيار — مستمد من معرّفات القواعد في الكود
+  const CHK={
+    "5.17.2":["28 قاعدة إتاحة بالمعيار العالمي: التباين، النصوص البديلة، تسميات الأزرار والروابط والنماذج، ترتيب العناوين، لغة الصفحة، التنقل بلوحة المفاتيح","10 قواعد «عربية أولًا» بنيناها خصيصًا: اتجاه RTL، لغة HTML عربية، توحيد الأرقام، دعم الخط العربي، تطابق لغة العناوين والأزرار والأوصاف، وتخطٍّ للمحتوى","كابتشا مُتاحة لذوي الإعاقة"],
+    "5.21.1":["أمن النقل: HTTPS وإصدارات TLS وصحة الشهادة ومنع المحتوى المختلط","رؤوس الحماية: HSTS وCSP وPermissions وReferrer وCOOP/CORP — وعدم تسريب نسخة الخادم","كشف المكتبات القديمة المكشوفة","حزمة PDPL: سياسة الخصوصية، بانر موافقة الكوكيز وأعلام أمانها، إشعار جمع البيانات على النماذج، وروابط الخصوصية والشروط"],
+    "5.22.2":["توازي العنوان بين العربية والإنجليزية ورصد الأجزاء غير المترجمة","أزرار وروابط فارغة أو بنص عام («اضغط هنا») أو مكررة السياق","أطوال العناوين والفقرات","مقروئية النص العربي والإنجليزي","وجود تاريخ آخر تحديث"],
+    "5.21.2":["سرعات المستخدم الفعلية: LCP وCLS وINP","وزن الصفحة وعدد موارد الطرف الثالث","أساسيات الظهور: H1 واحد، canonical، وصف ميتا، hreflang ع/إ، Open Graph، بيانات منظمة JSON-LD، وsitemap"],
+    "5.15.4":["توكنز الألوان (تعبئة وحدود) والحواف والظلال","خط IBM Plex العربي: العائلة والمقاسات والأوزان وحد أدنى 12px","شبكة مسافات 4px","إظهار حالة التركيز focus","شارة الالتزام بكود المنصات"],
+    "5.17.5":["إعداد viewport ومنع الانزلاق الأفقي","أهداف اللمس وأحجامها ومسافاتها","عدم تعطيل التكبير وحجم خط مقروء على الجوال","اتساق التنقل بين الصفحات"],
+    "5.15.3":["استخدام النطاق الحكومي الرسمي .gov.sa"],
+    "5.14.2":["حضور الخدمات المشتركة وربط المنصات الوطنية","التحقق الصحيح من حقل رقم الهوية الوطنية"],
+    "5.12.2":["عدم استخدام أدوات تحليلات أجنبية","عدم تحميل الخطوط من مزودات أجنبية","رصد أي CDN أجنبي للمراجعة"],
+    "5.18.2":["نموذج شكوى ظاهر وقنوات تواصل حاضرة","إمكانية تتبع الشكوى","قناة الإبلاغ عن محتوى خاطئ"],
+    "5.18.1":["ودجت ملاحظات المستفيد على الصفحات","روابط قنوات التواصل الاجتماعي الرسمية"],
+    "5.19.2":["إتاحة الاشتراك في النشرة البريدية"],
+    "5.20.3":["إشارات دراسة التجربة وتحسينها"],
+    "5.16.1":["إعلان مستويات جودة الخدمة SLA"],
+    "5.17.1":["بيان الإتاحة/الوصولية على الموقع"],
+    "5.17.4":["ملامح الخدمات الاستباقية والشخصنة"],
+    "5.22.1":["قسم أسئلة شائعة قابل للاكتشاف","شريط بحث حاضر","صفحة تواصل قابلة للاكتشاف","الإشارة إلى رؤية 2030"]
+  };
+  // درج الوثائق — أبرز ما التقطناه من كل وثيقة
+  const DOC_DATA={
+    v5:{t:"وثيقة المعايير الأساسية للتحول الرقمي", m:"V5.0 · 155 صفحة · عامة", b:["الإطار كاملًا: 10 منظورات × 24 محورًا × 89 معيارًا — حُمّلت نصوصها ومتطلباتها الحرفية في الكتالوج","لا أوزان منشورة في الوثيقة كلها — لذلك لا نخترعها","منهجية التقدير المعتمدة: كلي / جزئي / عدم التزام — وحالة «لا ينطبق» بضوابطها","منظور كفاءة المواقع بلا أدلة مستندية: تتحقق منه الهيئة آليًا — وهو موطئ قدم القياس الآلي"], l:"الكتالوج الحي بسجل إصداراته + تصنيف طريقة التحقق + 128 قاعدة فحص مُسندة"},
+    eff:{t:"الدليل التعريفي لمؤشر كفاءة المواقع الإلكترونية والمحتوى الرقمي", m:"V2.0 · 19 صفحة · عام", b:["منظوران × 11 محورًا — سنويًا على مواقع مختارة","الكفاءة التقنية (6 محاور): تُقاس بأدوات تقنية آلية","تجربة المحتوى (5 محاور): تصفح خبير بشري"], l:"هذا الدليل يرسم «خط الأتمتة» — محرك الفحص عندنا يقيس آليًا ما رسمه هذا الدليل آليًا"},
+    content:{t:"الدليل الاسترشادي للمحتوى الرقمي للمواقع الحكومية", m:"V1.0 · 41 صفحة · عام", b:["إرشادات جودة المحتوى الحكومي: اللغة والبنية وحداثة المحتوى","دليل استرشادي عام — التزمنا روحه في قواعد المحتوى"], l:"حزمة قواعد جودة المحتوى في المحرك: العناوين، الأزرار، المقروئية العربية والإنجليزية، آخر تحديث"},
+    dxmi:{t:"أدلة منظورات مؤشر نضج التجربة الرقمية", m:"ثلاث وثائق مقيدة التداول · 140 صفحة — نلتزم بتصنيفها فلا نعرض عناوينها", b:["منهجية الاستجابة بالأدلة على منظورات المؤشر","أهداف رقمية دقيقة: معالجة الشكوى ≤ يوم عمل، وإغلاق 95% ضمن الاتفاق","إصداران (2025 و2026): تتبعنا تطور المنهجية نفسها بين دورتين"], l:"مسار الأدلة والتقييم الذاتي · حدود الأدوات (لا خلط مع المعايير الأساسية) · مبدأ سجل الإصدارات"}
+  };
+  function openDoc(k){
+    const d0=DOC_DATA[k]; if(!d0) return;
+    lastGrp=null; document.body.classList.remove("has-back","std-view");
+    dchip.textContent="وثيقة";
+    dtitle.textContent=d0.t;
+    dmeta.textContent=d0.m;
+    dbody.innerHTML='<p class="rqt">أبرز ما التقطناه منها:</p><ul class="ck">'+d0.b.map(x=>"<li>"+esc(x)+"</li>").join("")+
+      '</ul><p class="rqt" style="margin-top:1rem">أين تعيش في مُطابق؟</p><p style="font-size:.85rem; color:var(--g-700); line-height:1.7">'+esc(d0.l)+"</p>";
+    showDrawer();
+  }
+  const GRPS={
+    p9:{n:"كفاءة المواقع وجودة المحتوى الرقمي — 4/4",ids:["5.21.1","5.21.2","5.22.1","5.22.2"]},
+    p7:{n:"القنوات والخدمات — 5 معايير",ids:["5.17.1","5.17.2","5.17.4","5.17.5","5.16.1"]},
+    p8:{n:"مركزية المستفيد — 4 معايير",ids:["5.18.1","5.18.2","5.19.2","5.20.3"]},
+    p6:{n:"الحكومة الشاملة — 3 معايير",ids:["5.14.2","5.15.3","5.15.4"]},
+    p5:{n:"تقنية المعلومات — معيار واحد",ids:["5.12.2"]}
+  };
+  const drawer=document.getElementById("drawer"), dbody=document.getElementById("dbody"),
+        dtitle=document.getElementById("dtitle"), dchip=document.getElementById("dchip"),
+        dmeta=document.getElementById("dmeta"), dback=document.getElementById("dback");
+  let lastGrp=null, lastCat=null, curStd=null;
+  // فئات طبيعة المعايير — الأسماء من قاعدة الإنتاج
+  const CAT_DATA={
+    auto:{n:"آلية بالكامل — 9 معايير",d:"يستطيع الفاحص وحده الحكم عليها من الموقع مباشرة — وكلها مغطاة بقواعد اليوم:",items:[["5.15.4","نظام التصميم الوطني الموحّد (كود المنصات)"],["5.17.1","التخطيط لإتاحة وتحسين الخدمات عبر القنوات الرقمية"],["5.17.2","تنفيذ خطط إتاحة الخدمات على القنوات الرقمية وتحسينها"],["5.17.5","تكامل واتساق قنوات تقديم الخدمة"],["5.18.1","إتاحة القنوات وفرص المشاركة الإلكترونية"],["5.21.1","موثوقية وأمن الموقع الإلكتروني للجهة"],["5.21.2","كفاءة الموقع وتحسين ظهوره على محركات البحث"],["5.22.1","القيمة المضافة للمحتوى الرقمي"],["5.22.2","الجودة التحريرية للمحتوى الرقمي"]]},
+    partial:{n:"مختلطة — 18 معيارًا",d:"جزء يُقاس آليًا وجزء يُثبَت بمستند — والبطاقة تعرض الوجهين معًا. المعلَّم منها أخضر عليه قواعد تعمل اليوم:",items:[["5.10.5","خطط استمرارية الأعمال والمراكز الاحتياطية"],["5.11.5","استخدام البريد الإلكتروني"],["5.12.2","تنفيذ ومتابعة أعمال إدارة الخدمات التقنية"],["5.12.4","قواعد البرمجيات الحرة ومفتوحة المصدر"],["5.13.2","خطة تبني الحوسبة السحابية"],["5.13.3","تفعيل بيئة الحوسبة السحابية"],["5.14.2","الارتباط بالأنظمة والخدمات المشتركة"],["5.14.4","تفعيل خدمات الثقة الرقمية"],["5.15.3","حوكمة وتسجيل النطاقات الحكومية الرقمية"],["5.16.2","النظم الرقمية لقياس جودة الخدمات"],["5.16.4","تطوير الخدمات ذات الأولوية"],["5.17.3","الخدمات الاستباقية للمستفيد الداخلي"],["5.17.4","الخدمات الاستباقية للمستفيد الخارجي"],["5.18.2","متابعة مشاركات المستفيدين"],["5.18.3","الاستفادة من مشاركات المستفيدين ونشرها"],["5.19.2","برنامج تعزيز العلاقة مع المستفيد"],["5.20.4","أدوات قياس ومتابعة تجربة المستفيد"],["5.20.5","تطبيق مفهوم رحلات الحياة"]]},
+    evidence:{n:"مستندية — 62 معيارًا",d:"طبيعتها وثائق: سياسات وخطط معتمدة، محاضر وقرارات، تقارير متابعة، اتفاقيات — وعلى رأسها منظورات الإستراتيجية والثقافة والعمليات والمخاطر والابتكار كاملةً. تُدار في مُطابق عبر الاستبيان المنظم ومكتبة الأدلة والمراجعة — ولا يدّعي الفاحص قياسها. القائمة الكاملة في كتالوج المنصة.",items:[]}
+  };
+  const ORDER=["5.17.2","5.21.1","5.22.2","5.21.2","5.15.4","5.17.5","5.18.2","5.22.1","5.12.2","5.14.2","5.18.1","5.15.3","5.16.1","5.17.1","5.17.4","5.19.2","5.20.3"];
+  const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  function showDrawer(){ document.body.classList.add("drawer-open"); drawer.setAttribute("aria-hidden","false"); }
+  function closeDrawer(){ document.body.classList.remove("drawer-open","has-back","std-view"); drawer.setAttribute("aria-hidden","true"); lastGrp=null; lastCat=null; curStd=null; }
+  function openCat(k){
+    const c=CAT_DATA[k]; if(!c) return;
+    lastCat=k; lastGrp=null; document.body.classList.remove("has-back","std-view");
+    dchip.textContent="فئة";
+    dtitle.textContent=c.n;
+    dmeta.textContent="";
+    dbody.innerHTML='<p style="font-size:.85rem; color:var(--g-700); line-height:1.7; margin-bottom:.7rem">'+esc(c.d)+"</p>"+
+      (c.items.length?'<ul class="gl">'+c.items.map(([id,t])=>{
+        const has=!!STD_DATA[id];
+        return "<li"+(has?' data-std="'+id+'"':"")+"><span>"+esc(t)+' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span>'+(has?'<span class="rcnt num">'+STD_DATA[id].rc+" قاعدة</span>":"")+"</li>";
+      }).join("")+"</ul>":"");
+    showDrawer();
+  }
+  function openStd(id, fromGrp){
+    const s=STD_DATA[id]; if(!s) return;
+    if(!fromGrp){ lastGrp=null; lastCat=null; }
+    curStd=id;
+    document.body.classList.toggle("has-back", !!(lastGrp||lastCat));
+    document.body.classList.add("std-view");
+    const nReqs=s.reqs.filter(r=>!r.startsWith("— ")).length;
+    document.getElementById("dpos").textContent=(ORDER.indexOf(id)+1)+" / "+ORDER.length;
+    dchip.textContent="المعيار "+id;
+    dtitle.textContent=s.t;
+    dmeta.textContent="المنظور: "+s.p+"  ·  المتطلبات: "+nReqs+"  ·  قواعد الفحص لدينا: "+s.rc;
+    const chk=CHK[id]||[];
+    dbody.innerHTML='<p class="rqt">المتطلبات الرسمية للمعيار — كما في الوثيقة:</p><ol class="rq">'+
+      s.reqs.map(r=>r.startsWith("— ")?'<li class="sub">'+esc(r.slice(2))+"</li>":"<li>"+esc(r)+"</li>").join("")+
+      "</ol>"+
+      (chk.length?'<p class="rqt" style="margin-top:1rem; color:var(--sa-800)">وماذا تفحص قواعدنا الـ'+s.rc+' عليه؟</p><ul class="ck">'+chk.map(c=>"<li>"+esc(c)+"</li>").join("")+"</ul>":"")+
+      '<p class="src num">المصدر: المتطلبات من كتالوج V5.0 في قاعدة بيانات مُطابق — والفحوصات من معرّفات القواعد في الكود مباشرة.</p>';
+    showDrawer();
+  }
+  function openGrp(k){
+    const g=GRPS[k]; if(!g) return;
+    lastGrp=k; document.body.classList.remove("has-back","std-view");
+    dchip.textContent="مجموعة";
+    dtitle.textContent=g.n;
+    dmeta.textContent="اختاري معيارًا لعرض متطلباته الرسمية:";
+    dbody.innerHTML='<ul class="gl">'+g.ids.map(id=>{
+      const s=STD_DATA[id];
+      return '<li data-std="'+id+'"><span>'+esc(s.t)+' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span><span class="rcnt num">'+s.rc+" قاعدة</span></li>";
+    }).join("")+"</ul>";
+    showDrawer();
+  }
+  document.getElementById("dx").addEventListener("click",closeDrawer);
+  dback.addEventListener("click",()=>{ if(lastGrp) openGrp(lastGrp); else if(lastCat) openCat(lastCat); });
+  function fromHash(){
+    const h=parseInt(location.hash.slice(1),10);
+    go(Number.isFinite(h)&&h>=1?h-1:0,false);
+  }
+  addEventListener("hashchange",fromHash);
+  fromHash();
+})();
+</script>
+
+</body>
+</html>
