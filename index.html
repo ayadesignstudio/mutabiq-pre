@@ -398,6 +398,11 @@
   #dbody ol.rq{list-style:none; display:flex; flex-direction:column; gap:.45rem; counter-reset:rq}
   #dbody ol.rq li{background:var(--g-50); border:1px solid var(--g-200); border-radius:8px; padding:.5rem .8rem; padding-inline-start:2.3rem; position:relative; font-size:.82rem; color:var(--g-800); line-height:1.65; counter-increment:rq}
   #dbody ol.rq li::before{content:counter(rq); position:absolute; inset-inline-start:.6rem; top:.55rem; inline-size:1.25rem; block-size:1.25rem; border-radius:50%; background:var(--sa-600); color:var(--white); font-weight:700; font-size:.68rem; display:grid; place-items:center}
+  /* المتطلب الذي تُسند إليه قواعدنا فعلًا — تعليمُه يمنع قراءة الرقم على المعيار كله */
+  #dbody ol.rq li.focus{background:var(--sa-50); border-color:var(--sa-500)}
+  #dbody ol.rq li.focus::before{background:var(--sa-700)}
+  #dbody ol.rq li .fx{display:inline-block; margin-inline-start:.45rem; background:var(--sa-600); color:var(--white);
+    border-radius:99px; padding:.02rem .5rem; font-size:.62rem; font-weight:700; vertical-align:.08em; white-space:nowrap}
   #dbody ol.rq li.sub{margin-inline-start:1.4rem; background:var(--white); counter-increment:none; padding-inline-start:.9rem}
   #dbody ol.rq li.sub::before{content:"—"; background:none; color:var(--sa-600); inset-inline-start:.2rem; top:.4rem}
   #dbody ul.gl{list-style:none; display:flex; flex-direction:column; gap:.5rem}
@@ -1523,13 +1528,23 @@
       ).join("")+"</ul>":"");
     showDrawer();
   }
+  // المتطلب الذي تُسند إليه قواعدنا، بترقيم الوثيقة. لا يُدرج معيار إلا إذا كان الإسناد معروفًا.
+  const REQ_FOCUS={"5.17.2":4};
   function stdDetailHTML(id){
     const s=STD_DATA[id]; if(!s) return "";
-    const chk=CHK[id]||[];
+    const chk=CHK[id]||[], fx=REQ_FOCUS[id]||0;
+    let top=0;
     return '<p class="rqt">المتطلبات الرسمية للمعيار — كما في الوثيقة:</p><ol class="rq">'+
-      s.reqs.map(r=>r.startsWith("— ")?'<li class="sub">'+esc(r.slice(2))+"</li>":"<li>"+esc(r)+"</li>").join("")+
+      s.reqs.map(r=>{
+        if(r.startsWith("— ")) return '<li class="sub">'+esc(r.slice(2))+"</li>";
+        top++;
+        return top===fx
+          ? '<li class="focus">'+esc(r)+'<span class="fx">هنا تعمل قواعدنا الـ'+s.rc+'</span></li>'
+          : "<li>"+esc(r)+"</li>";
+      }).join("")+
       "</ol>"+
-      (chk.length?'<p class="rqt" style="margin-top:1rem; color:var(--sa-800)">وماذا تفحص قواعدنا الـ'+s.rc+' عليه؟</p><ul class="ck">'+chk.map(c=>"<li>"+esc(c)+"</li>").join("")+"</ul>":"")+
+      (chk.length?'<p class="rqt" style="margin-top:1rem; color:var(--sa-800)">وماذا تفحص قواعدنا الـ'+s.rc+
+        (fx?' على المتطلب ('+fx+')؟':' عليه؟')+'</p><ul class="ck">'+chk.map(c=>"<li>"+esc(c)+"</li>").join("")+"</ul>":"")+
       '<p class="src num">المصدر: المتطلبات من كتالوج V5.0 في قاعدة بيانات مُطابق — والفحوصات من معرّفات القواعد في الكود مباشرة.</p>';
   }
   const CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
