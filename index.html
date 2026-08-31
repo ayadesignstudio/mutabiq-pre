@@ -358,6 +358,10 @@
   .heroc .rn{display:block; font-size:clamp(1.2rem,3.8vh,2rem); font-weight:700; color:var(--sa-700); line-height:1.1}
   .heroc .rl{display:block; font-size:clamp(.55rem,1.4vh,.72rem); color:var(--g-500); font-weight:700; margin-bottom:.2rem}
   .heroc .rt{display:block; font-size:clamp(.6rem,1.55vh,.8rem); color:var(--g-800); font-weight:600; line-height:1.4; margin-top:.25rem}
+  /* المعيار الوحيد هنا الذي نخضع له نحن أيضًا — التمييز يُعلن سببه بدل أن يُترك لغزًا */
+  .heroc.self{background:var(--white); border-color:var(--sa-500)}
+  .heroc .rb{display:inline-block; margin-top:.3rem; background:var(--sa-600); color:var(--white); border-radius:99px;
+    padding:.08rem .55rem; font-size:clamp(.5rem,1.2vh,.64rem); font-weight:700; letter-spacing:.01em}
   .pgroups{display:flex; flex-direction:column; gap:.4rem}
   .pgroup{display:flex; align-items:baseline; gap:.6rem; background:var(--white); border:1px solid var(--g-200); border-radius:10px; padding:.45rem .8rem}
   .pgroup .pn{flex:none; font-weight:700; color:var(--sa-800); font-size:clamp(.66rem,1.7vh,.88rem); min-inline-size:11.5rem}
@@ -818,7 +822,7 @@
       <div class="heroc" data-std="5.21.1"><span class="rn num">20</span><span class="rl">قاعدة فحص</span><span class="rt">موثوقية وأمن الموقع الإلكتروني للجهة</span></div>
       <div class="heroc" data-std="5.22.2"><span class="rn num">16</span><span class="rl">قاعدة فحص</span><span class="rt">الجودة التحريرية للمحتوى الرقمي</span></div>
       <div class="heroc" data-std="5.21.2"><span class="rn num">13</span><span class="rl">قاعدة فحص</span><span class="rt">كفاءة الموقع وتحسين ظهوره على محركات البحث</span></div>
-      <div class="heroc" data-std="5.15.4" style="background:var(--white)"><span class="rn num">11</span><span class="rl">قاعدة فحص</span><span class="rt">نظام التصميم الوطني الموحّد «كود المنصات»</span></div>
+      <div class="heroc self" data-std="5.15.4"><span class="rn num">11</span><span class="rl">قاعدة فحص</span><span class="rt">نظام التصميم الوطني الموحّد «كود المنصات»</span><span class="rb">ومنصتنا مبنية به</span></div>
     </div>
     <div class="pgroups reveal">
       <div class="pgroup" data-grp="p9"><span class="pn num">كفاءة المواقع — 4/4 ⭐</span><span class="ps">موثوقية وأمن الموقع · كفاءة الموقع وSEO · الجودة التحريرية للمحتوى · القيمة المضافة للمحتوى — المنظور الوحيد الذي لا يتطلب أدلة مستندية — تتابعه الهيئة مباشرةً، ومعاييره الأربعة كلها بقواعد فحص</span></div>
