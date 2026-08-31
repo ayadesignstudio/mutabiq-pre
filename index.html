@@ -140,14 +140,20 @@
 
 
   /* ═══ قائمة الشرائح — زر يسار الشاشة أعلاها (اتجاه مادي، مثل زر العودة) ═══ */
+  /* زرّ تنقّل لا زرّ ثانوي: يُرى من أول نظرة، ومعه اسمه بحروفه */
   #navBtn{position:fixed; top:clamp(.7rem,1.8vh,1.2rem); left:clamp(.6rem,1.5vw,1.2rem);
-    inline-size:2.7rem; block-size:2.7rem; border-radius:50%; background:#fff; border:1.5px solid var(--sa-600);
-    color:var(--sa-700); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:62;
-    box-shadow:0 6px 18px rgba(13,61,38,.14); opacity:.5; padding:0;
+    block-size:2.7rem; padding:0 .85rem 0 .7rem; gap:.45rem; border-radius:999px;
+    background:var(--sa-600); border:1.5px solid var(--sa-600); color:#fff;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:62;
+    box-shadow:0 6px 18px rgba(13,61,38,.24); opacity:.95;
+    font:inherit; font-size:clamp(.66rem,1.6vh,.82rem); font-weight:700;
     transition:opacity .2s ease, transform .2s ease, background .2s ease}
-  #navBtn:hover{opacity:1; transform:scale(1.1); background:var(--sa-50)}
+  #navBtn:hover{opacity:1; transform:scale(1.05); background:var(--sa-700)}
+  #navBtn .lbl{white-space:nowrap}
+  body.on-dark #navBtn{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.5); color:#fff}
+  body.on-dark #navBtn:hover{background:rgba(255,255,255,.24)}
+  @media (max-width:560px){ #navBtn .lbl{display:none} #navBtn{padding:0; inline-size:2.7rem} }
   #navBtn svg{inline-size:1.15rem; block-size:1.15rem}
-  body.on-dark #navBtn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); color:#fff}
   body.drawer-open #navBtn{opacity:0; pointer-events:none}
   body.nav-open #navBtn{opacity:1; background:var(--sa-600); border-color:var(--sa-600); color:#fff}
 
@@ -1257,7 +1263,7 @@
 
 <div id="progress" role="presentation"></div>
 <button id="navBtn" type="button" aria-label="كل الشرائح" aria-expanded="false" aria-controls="navPanel">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg><span class="lbl">الشرائح</span>
 </button>
 <div id="navPanel" role="dialog" aria-modal="true" aria-label="كل الشرائح">
   <h2>كل الشرائح</h2>
