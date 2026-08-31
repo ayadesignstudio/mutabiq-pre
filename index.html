@@ -397,9 +397,20 @@
   #dbody ol.rq li.sub{margin-inline-start:1.4rem; background:var(--white); counter-increment:none; padding-inline-start:.9rem}
   #dbody ol.rq li.sub::before{content:"—"; background:none; color:var(--sa-600); inset-inline-start:.2rem; top:.4rem}
   #dbody ul.gl{list-style:none; display:flex; flex-direction:column; gap:.5rem}
-  #dbody ul.gl li{border:1px solid var(--g-200); border-radius:10px; padding:.6rem .9rem; display:flex; justify-content:space-between; align-items:center; gap:.8rem; font-weight:600; color:var(--g-900); font-size:.85rem}
+  #dbody ul.gl li{border:1px solid var(--g-200); border-radius:10px; overflow:hidden; font-weight:600; color:var(--g-900); font-size:.85rem}
   #dbody ul.gl li:hover{border-color:var(--sa-500)}
-  #dbody ul.gl li .rcnt{flex:none; background:var(--sa-100); color:var(--sa-800); border-radius:99px; padding:.15rem .7rem; font-weight:700; font-size:.72rem}
+  #dbody ul.gl li.plain{padding:.6rem .9rem; display:flex; justify-content:space-between; align-items:center; gap:.8rem}
+  #dbody ul.gl .rcnt{flex:none; background:var(--sa-100); color:var(--sa-800); border-radius:99px; padding:.15rem .7rem; font-weight:700; font-size:.72rem}
+  /* المعيار يتوسّع تحت صفّه — فلا انتقال ولا حاجة للرجوع */
+  #dbody ul.gl .gt{inline-size:100%; display:flex; justify-content:space-between; align-items:center; gap:.7rem;
+    background:none; border:none; font:inherit; font-weight:600; color:var(--g-900); font-size:.85rem;
+    padding:.6rem .9rem; cursor:pointer; text-align:start; line-height:1.5}
+  #dbody ul.gl .gt .chev{flex:none; inline-size:.9rem; block-size:.9rem; color:var(--sa-600); transition:transform .2s ease}
+  #dbody ul.gl li.open{border-color:var(--sa-500)}
+  #dbody ul.gl li.open .gt{background:var(--sa-50)}
+  #dbody ul.gl li.open .gt .chev{transform:rotate(90deg)}
+  #dbody ul.gl .gd{display:none; padding:.75rem .9rem .9rem; border-top:1px dashed var(--g-300)}
+  #dbody ul.gl li.open .gd{display:block}
   #dbody .src{margin-top:.9rem; color:var(--g-500); font-size:.7rem}
   #dnav{display:none; align-items:center; gap:.6rem; margin-top:.55rem}
   body.std-view #dnav{display:flex}
@@ -1406,6 +1417,7 @@
           return;
         }
         const li=e.target.closest("li[data-std]");
+        if(li && li.querySelector(".gd")){ toggleRow(li); return; }
         if(li) openStd(li.dataset.std, true);
         return;
       }
@@ -1501,11 +1513,37 @@
     dtitle.textContent=c.n;
     dmeta.textContent="";
     dbody.innerHTML='<p style="font-size:.85rem; color:var(--g-700); line-height:1.7; margin-bottom:.7rem">'+esc(c.d)+"</p>"+
-      (c.items.length?'<ul class="gl">'+c.items.map(([id,t])=>{
-        const has=!!STD_DATA[id];
-        return "<li"+(has?' data-std="'+id+'"':"")+"><span>"+esc(t)+' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span>'+(has?'<span class="rcnt num">'+STD_DATA[id].rc+" قاعدة</span>":"")+"</li>";
-      }).join("")+"</ul>":"");
+      (c.items.length?'<ul class="gl">'+c.items.map(([id,t])=>
+        STD_DATA[id] ? glRow(id,t)
+        : '<li class="plain"><span>'+esc(t)+' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span></li>'
+      ).join("")+"</ul>":"");
     showDrawer();
+  }
+  function stdDetailHTML(id){
+    const s=STD_DATA[id]; if(!s) return "";
+    const chk=CHK[id]||[];
+    return '<p class="rqt">المتطلبات الرسمية للمعيار — كما في الوثيقة:</p><ol class="rq">'+
+      s.reqs.map(r=>r.startsWith("— ")?'<li class="sub">'+esc(r.slice(2))+"</li>":"<li>"+esc(r)+"</li>").join("")+
+      "</ol>"+
+      (chk.length?'<p class="rqt" style="margin-top:1rem; color:var(--sa-800)">وماذا تفحص قواعدنا الـ'+s.rc+' عليه؟</p><ul class="ck">'+chk.map(c=>"<li>"+esc(c)+"</li>").join("")+"</ul>":"")+
+      '<p class="src num">المصدر: المتطلبات من كتالوج V5.0 في قاعدة بيانات مُطابق — والفحوصات من معرّفات القواعد في الكود مباشرة.</p>';
+  }
+  const CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+  // صفّ قابل للتوسّع: العنوان زرّ، والتفاصيل تُبنى عند أول فتح
+  function glRow(id,title){
+    return '<li data-std="'+id+'"><button type="button" class="gt" aria-expanded="false"><span>'+esc(title)+
+      ' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span>'+
+      '<span class="rcnt num">'+STD_DATA[id].rc+' قاعدة</span>'+CHEV+'</button><div class="gd"></div></li>';
+  }
+  function toggleRow(li){
+    const ul=li.parentNode, was=li.classList.contains("open");
+    ul.querySelectorAll("li.open").forEach(o=>{ o.classList.remove("open"); const b=o.querySelector(".gt"); if(b) b.setAttribute("aria-expanded","false"); });
+    if(was) return;
+    const gd=li.querySelector(".gd");
+    if(gd && !gd.innerHTML) gd.innerHTML=stdDetailHTML(li.dataset.std);
+    li.classList.add("open");
+    li.querySelector(".gt").setAttribute("aria-expanded","true");
+    li.scrollIntoView({block:"nearest"});
   }
   function openStd(id, fromGrp){
     const s=STD_DATA[id]; if(!s) return;
@@ -1518,12 +1556,7 @@
     dchip.textContent="المعيار "+id;
     dtitle.textContent=s.t;
     dmeta.textContent="المنظور: "+s.p+"  ·  المتطلبات: "+nReqs+"  ·  قواعد الفحص لدينا: "+s.rc;
-    const chk=CHK[id]||[];
-    dbody.innerHTML='<p class="rqt">المتطلبات الرسمية للمعيار — كما في الوثيقة:</p><ol class="rq">'+
-      s.reqs.map(r=>r.startsWith("— ")?'<li class="sub">'+esc(r.slice(2))+"</li>":"<li>"+esc(r)+"</li>").join("")+
-      "</ol>"+
-      (chk.length?'<p class="rqt" style="margin-top:1rem; color:var(--sa-800)">وماذا تفحص قواعدنا الـ'+s.rc+' عليه؟</p><ul class="ck">'+chk.map(c=>"<li>"+esc(c)+"</li>").join("")+"</ul>":"")+
-      '<p class="src num">المصدر: المتطلبات من كتالوج V5.0 في قاعدة بيانات مُطابق — والفحوصات من معرّفات القواعد في الكود مباشرة.</p>';
+    dbody.innerHTML=stdDetailHTML(id);
     showDrawer();
   }
   function openGrp(k){
@@ -1532,10 +1565,8 @@
     dchip.textContent="مجموعة";
     dtitle.textContent=g.n;
     dmeta.textContent="اختاري معيارًا لعرض متطلباته الرسمية:";
-    dbody.innerHTML='<ul class="gl">'+g.ids.map(id=>{
-      const s=STD_DATA[id];
-      return '<li data-std="'+id+'"><span>'+esc(s.t)+' <span class="num" style="color:var(--g-500); font-weight:600">('+id+')</span></span><span class="rcnt num">'+s.rc+" قاعدة</span></li>";
-    }).join("")+"</ul>";
+    dmeta.textContent="اضغطي على معيار ليتوسّع تحته بمتطلباته الرسمية:";
+    dbody.innerHTML='<ul class="gl">'+g.ids.map(id=>glRow(id,STD_DATA[id].t)).join("")+"</ul>";
     showDrawer();
   }
   document.getElementById("dx").addEventListener("click",closeDrawer);
