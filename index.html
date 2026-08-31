@@ -138,6 +138,46 @@
     .cvwires .flow{display:none}
   }
 
+
+  /* ═══ قائمة الشرائح — زر يسار الشاشة أعلاها (اتجاه مادي، مثل زر العودة) ═══ */
+  #navBtn{position:fixed; top:clamp(.7rem,1.8vh,1.2rem); left:clamp(.6rem,1.5vw,1.2rem);
+    inline-size:2.7rem; block-size:2.7rem; border-radius:50%; background:#fff; border:1.5px solid var(--sa-600);
+    color:var(--sa-700); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:62;
+    box-shadow:0 6px 18px rgba(13,61,38,.14); opacity:.5; padding:0;
+    transition:opacity .2s ease, transform .2s ease, background .2s ease}
+  #navBtn:hover{opacity:1; transform:scale(1.1); background:var(--sa-50)}
+  #navBtn svg{inline-size:1.15rem; block-size:1.15rem}
+  body.on-dark #navBtn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); color:#fff}
+  body.drawer-open #navBtn{opacity:0; pointer-events:none}
+  body.nav-open #navBtn{opacity:1; background:var(--sa-600); border-color:var(--sa-600); color:#fff}
+
+  /* display لا opacity: طبقةٌ شفافة تبتلع النقر لو لم يعمل الانتقال —
+     فالحالة المغلقة إزالة كاملة، والظهور تحريكٌ يُضاف لا يُعتمد عليه */
+  #navPanel{display:none; position:fixed; inset:0; z-index:61; background:var(--sa-950); color:var(--white);
+    overflow-y:auto; overscroll-behavior:contain;
+    padding:clamp(3.6rem,9vh,5rem) clamp(1.2rem,4vw,3.4rem) clamp(1.6rem,5vh,3rem)}
+  body.nav-open #navPanel{display:block; animation:navIn .22s ease}
+  @keyframes navIn{from{transform:translateY(-8px)}to{transform:none}}
+  @media (prefers-reduced-motion:reduce){ body.nav-open #navPanel{animation:none} }
+  #navPanel h2{font-size:clamp(.92rem,2.4vh,1.15rem); font-weight:700; margin-bottom:.25rem}
+  #navPanel .hintline{font-size:clamp(.62rem,1.6vh,.78rem); color:var(--sa-300); font-weight:600;
+    margin-bottom:clamp(.9rem,2.6vh,1.5rem)}
+  #navGrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr));
+    gap:clamp(.5rem,1.4vw,.85rem)}
+  .navcard{display:flex; gap:.6rem; align-items:flex-start; text-align:start; font:inherit; color:inherit;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:11px;
+    padding:.7rem .8rem; cursor:pointer; transition:background .15s ease, border-color .15s ease, transform .15s ease}
+  .navcard:hover{background:rgba(255,255,255,.12); border-color:var(--sa-300); transform:translateY(-2px)}
+  .navcard .n{flex:none; inline-size:1.5rem; block-size:1.5rem; border-radius:6px; display:grid; place-items:center;
+    background:rgba(255,255,255,.1); color:var(--sa-200); font-size:.72rem; font-weight:700;
+    font-variant-numeric:tabular-nums}
+  .navcard .tx{min-width:0}
+  .navcard b{display:block; font-size:clamp(.72rem,1.85vh,.9rem); font-weight:700; line-height:1.35}
+  .navcard em{display:block; font-style:normal; font-size:clamp(.58rem,1.45vh,.72rem); color:var(--sa-300);
+    margin-top:.15rem; line-height:1.4}
+  .navcard.cur{background:rgba(145,221,176,.16); border-color:var(--sa-300)}
+  .navcard.cur .n{background:var(--sa-500); color:#fff}
+
   /* شريط الفصول */
   .rail{display:flex; gap:.5rem; margin-top:clamp(.5rem,1.6vh,.9rem)}
   .rail .seg{flex:1; display:flex; align-items:center; gap:.5rem; border-radius:99px; border:1px solid var(--g-200); background:var(--g-50); padding:.3rem .8rem; color:var(--g-500); font-size:clamp(.6rem,1.5vh,.78rem); font-weight:600}
@@ -167,7 +207,7 @@
   #homeBtn{position:fixed; bottom:clamp(2.9rem,6.5vh,3.9rem); right:clamp(.6rem,1.5vw,1.2rem); inline-size:2.7rem; block-size:2.7rem; border-radius:50%; background:#fff; border:1.5px solid var(--sa-600); color:var(--sa-700); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:60; box-shadow:0 6px 18px rgba(13,61,38,.14); opacity:.5; padding:0; transition:opacity .2s ease, transform .2s ease, background .2s ease}
   #homeBtn:hover{opacity:1; transform:scale(1.1); background:var(--sa-50)}
   #homeBtn svg{inline-size:1.15rem; block-size:1.15rem}
-  body.on-first #homeBtn, body.drawer-open #homeBtn{opacity:0; pointer-events:none}
+  body.on-first #homeBtn, body.drawer-open #homeBtn, body.nav-open #homeBtn{opacity:0; pointer-events:none}
   body.on-dark #homeBtn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); color:#fff}
   body.on-last #homeBtn{opacity:1; animation:homepulse 2.2s ease infinite}
   @keyframes homepulse{0%,100%{box-shadow:0 6px 18px rgba(13,61,38,.14)}50%{box-shadow:0 0 0 12px rgba(27,131,84,.18)}}
@@ -404,7 +444,7 @@
     main.deck{position:static}
     section.slide{position:relative; opacity:1; visibility:visible; transform:none; height:167mm; page-break-after:always; inset:auto}
     .reveal{opacity:1; transform:none}
-    #progress,#hud,#hint,#drawer,#veil,#homeBtn{display:none}
+    #progress,#hud,#hint,#drawer,#veil,#homeBtn,#navBtn,#navPanel{display:none}
   }
 </style>
 </head>
@@ -1216,6 +1256,14 @@
 </main>
 
 <div id="progress" role="presentation"></div>
+<button id="navBtn" type="button" aria-label="كل الشرائح" aria-expanded="false" aria-controls="navPanel">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
+</button>
+<div id="navPanel" role="dialog" aria-modal="true" aria-label="كل الشرائح">
+  <h2>كل الشرائح</h2>
+  <p class="hintline">اختر شريحة للانتقال إليها مباشرة — أو Esc للإغلاق</p>
+  <div id="navGrid"></div>
+</div>
 <div id="hud">
   <span id="counter" class="num">1 / 22</span>
   <span class="brand"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> مُطابق — رحلات الاستخدام · هيئة الحكومة الرقمية</span>
@@ -1259,9 +1307,50 @@
   const next=()=>go(i+1), prev=()=>go(i-1);
   const homeBtn=document.getElementById("homeBtn");
   homeBtn.addEventListener("click",e=>{ e.stopPropagation(); closeDrawer(); go(0); });
+
+  // ── قائمة الشرائح: قفزة مباشرة إلى أي شريحة، بلا تصفّح ──
+  const navBtn=document.getElementById("navBtn");
+  const navPanel=document.getElementById("navPanel");
+  const navGrid=document.getElementById("navGrid");
+  const navCards=slides.map((s,k)=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className="navcard"; b.dataset.k=k;
+    b.innerHTML='<span class="n"></span><span class="tx"><b></b><em></em></span>';
+    b.querySelector(".n").textContent=k+1;
+    b.querySelector("b").textContent=s.getAttribute("aria-label")||("شريحة "+(k+1));
+    // العنوان الفوقي للشريحة إن وُجد — يعطي الفصل الذي تنتمي إليه
+    const kick=s.querySelector(".kicker"), em=b.querySelector("em");
+    const kt=kick?kick.textContent.trim():"";
+    if(kt) em.textContent=kt; else em.remove();
+    navGrid.appendChild(b);
+    return b;
+  });
+  const navOpen=()=>document.body.classList.contains("nav-open");
+  function openNav(){
+    closeDrawer();
+    navCards.forEach((c,k)=>c.classList.toggle("cur",k===i));
+    document.body.classList.add("nav-open");
+    navBtn.setAttribute("aria-expanded","true");
+    navPanel.scrollTop=0;
+    (navCards[i]||navCards[0]).focus({preventScroll:true});
+  }
+  function closeNav(){
+    document.body.classList.remove("nav-open");
+    navBtn.setAttribute("aria-expanded","false");
+  }
+  navBtn.addEventListener("click",e=>{ e.stopPropagation(); navOpen()?closeNav():openNav(); });
+  navGrid.addEventListener("click",e=>{
+    const c=e.target.closest(".navcard"); if(!c) return;
+    e.stopPropagation(); closeNav(); go(parseInt(c.dataset.k,10));
+  });
+  navPanel.addEventListener("click",e=>{ if(e.target===navPanel) closeNav(); });
   document.body.classList.toggle("on-first", i===0);
   document.body.classList.toggle("on-last", i===slides.length-1);
   addEventListener("keydown",e=>{
+    if(navOpen()){
+      if(e.key==="Escape"){ e.preventDefault(); closeNav(); }
+      return;
+    }
     if(document.body.classList.contains("drawer-open")){
       if(e.key==="Escape") closeDrawer();
       return;
@@ -1277,7 +1366,7 @@
   });
   let tx=null,ty=null;
   addEventListener("touchstart",e=>{
-    if(document.body.classList.contains("drawer-open")){ tx=ty=null; return; }
+    if(document.body.classList.contains("drawer-open")||navOpen()){ tx=ty=null; return; }
     tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
   addEventListener("touchend",e=>{
     if(tx===null) return;
@@ -1287,8 +1376,9 @@
   },{passive:true});
   let lock=false;
   addEventListener("wheel",e=>{
-    // الدرج المفتوح يبتلع التمرير — وإلا انتقلت الشريحة تحت الطبقة
-    if(document.body.classList.contains("drawer-open")) return;
+    // الطبقة المفتوحة — درجًا كانت أو قائمة — تبتلع التمرير،
+    // وإلا انتقلت الشريحة تحتها
+    if(document.body.classList.contains("drawer-open")||navOpen()) return;
     if(lock || Math.abs(e.deltaY)<28) return; lock=true; setTimeout(()=>lock=false,750);
     (e.deltaY>0?next():prev());
   },{passive:true});
@@ -1300,6 +1390,7 @@
     if(t) s.setAttribute("data-go",t);
   });
   addEventListener("click",e=>{
+    if(navOpen()) return;
     if(document.body.classList.contains("drawer-open")){
       if(e.target.closest("#drawer")){
         const nv=e.target.closest("[data-dnav]");
