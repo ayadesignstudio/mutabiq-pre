@@ -207,6 +207,11 @@
   .sdot.r{background:#e8695a}.sdot.y{background:#e5b95c}.sdot.g{background:#65c466}
   .shotbar .addr{margin-inline-start:auto; background:#fff; border:1px solid var(--g-200); border-radius:999px; padding:.1rem .7rem; font-size:clamp(.55rem,1.35vh,.72rem); color:var(--g-500); font-weight:600}
   .shotframe img{display:block; inline-size:100%; block-size:auto}
+  /* the two «قيد الإنشاء» shots are softened: the layout still reads, the
+     unfinished detail does not. The numbers they support are stated in the
+     chips underneath as text, so nothing the slide argues is lost. */
+  .shotframe.wipshot{overflow:hidden}
+  .shotframe.wipshot img{filter:blur(3px) saturate(.94); transform:scale(1.015)}
   .shotnotes{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center}
   .shotchip{background:var(--sa-50); border:1px solid var(--sa-200); color:var(--sa-900); border-radius:999px; padding:.35rem .85rem; font-size:clamp(.6rem,1.55vh,.82rem); font-weight:600}
   .shotchip b{color:var(--sa-800)}
@@ -945,12 +950,12 @@
     <div class="accent"></div>
   </header>
   <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
-    <div class="shotframe reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 1.88))">
+    <div class="shotframe wipshot reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 1.88))">
       <span class="wip"><span class="wipdot" aria-hidden="true"></span>قيد الإنشاء</span><div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">تدقيق صفحة واحدة — موقع حكومي مباشر</span><span class="wipbar" aria-hidden="true"></span></div>
       <img src="shots/01-page-audit.jpg" alt="شاشة الملاحظات في مُطابق: قائمة ملاحظات عربية موسومة بمعايير DGA 2026، وبطاقة تفاصيل ملاحظة آلية الإبلاغ عن الفساد مع الإصلاح المقترح">
     </div>
     <div class="shotnotes reveal">
-      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم، وبقية شاشاتها تُبنى</span>
+      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم؛ نعرض شكلها لا تفاصيلها، وبقية شاشاتها تُبنى</span>
       <span class="shotchip num"><b>44 ملاحظة</b> على صفحة واحدة — بالعربية، لكل منها شدتها ومعيارها</span>
       <span class="shotchip">المختارة: <b>آلية الإبلاغ عن الفساد</b> — الوصف، ولماذا تهم، والإصلاح المقترح جاهزًا للنسخ</span>
     </div>
@@ -1014,12 +1019,12 @@
     <div class="accent"></div>
   </header>
   <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
-    <div class="shotframe reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 2.1))">
+    <div class="shotframe wipshot reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 2.1))">
       <span class="wip"><span class="wipdot" aria-hidden="true"></span>قيد الإنشاء</span><div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">لوحة الجهة — نتيجة الفحص الآلي</span><span class="wipbar" aria-hidden="true"></span></div>
       <img src="shots/02-entity-dashboard.jpg" alt="لوحة الجهة في مُطابق: نتيجة الفحص الآلي 34 من 100 موسومة يحتاج تحسين وثقة منخفضة، والتقييم الذاتي لم يُستكمل، مع فحص رابط فوري">
     </div>
     <div class="shotnotes reveal">
-      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم، وبقية شاشاتها تُبنى</span>
+      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم؛ نعرض شكلها لا تفاصيلها، وبقية شاشاتها تُبنى</span>
       <span class="shotchip num"><b>34/100</b> — تقدير تشخيصي مُعلَن الحدود: «ثقة منخفضة» ما دام التقييم الذاتي لم يُستكمل</span>
       <span class="shotchip num">مبنية على <b>57 تدقيقًا آليًا</b> — آخرها فحص حي أُجري أثناء إعداد هذا العرض</span>
       <span class="shotchip">التقسيم الرباعي الظاهر <b>تصنيفٌ داخلي في مُطابق</b> — لا علاقة له بمنظورات مؤشر نضج التجربة الرقمية ولا يدّعي قياسها</span>
@@ -1314,8 +1319,6 @@
     <svg style="inline-size:clamp(2.4rem,6vh,3.4rem); border-radius:18%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
     <h1 class="reveal" style="font-size:clamp(1.8rem,6.2vh,3.2rem); font-weight:700; line-height:1.35; margin-top:clamp(.8rem,3vh,1.4rem)">منظومة واحدة…<br>تُفتح من ثلاث بوابات.</h1>
     <p class="reveal" style="font-size:clamp(.95rem,2.6vh,1.3rem); color:var(--sa-200); margin-top:.7rem">شكرًا لكم — ونسعد بعرض أي بوابة مباشرة على المنصة</p>
-    <div class="reveal" style="width:4.6rem; height:4px; background:var(--sa-500); border-radius:2px; margin-block:clamp(.8rem,2.6vh,1.2rem)"></div>
-    <p class="reveal" style="font-size:clamp(.78rem,2vh,.98rem); color:var(--sa-300)">آية أحمد &nbsp;·&nbsp; مُطابق — Mutabiq Cloud</p>
   </div>
 </section>
 
