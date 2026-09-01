@@ -222,6 +222,14 @@
   .strip{display:flex; align-items:stretch; gap:clamp(.35rem,.8vw,.7rem); margin-top:clamp(.7rem,2.2vh,1.2rem)}
   .frame{flex:1; min-width:0; display:flex; flex-direction:column}
   .jarr{flex:0 0 clamp(.5rem,1vw,.9rem); display:grid; place-items:center; padding-top:12%}
+  .cyc{position:relative; block-size:clamp(1.3rem,3.6vh,2.1rem); margin-inline:2.6%; margin-block-end:.38rem;
+       border:1.5px dashed var(--g-300); border-bottom:0; border-radius:14px 14px 0 0}
+  .cyc .lbl{position:absolute; top:0; inset-inline:0; margin-inline:auto; inline-size:fit-content;
+       transform:translateY(-52%); display:flex; align-items:center; gap:.34rem; white-space:nowrap;
+       background:var(--white); padding-inline:.55rem; color:var(--g-600); font-weight:700;
+       font-size:clamp(.58rem,1.45vh,.76rem)}
+  .cyc .lbl svg{inline-size:1.05em; block-size:1.05em; flex:none; color:var(--g-600)}
+  .cyc .end{position:absolute; bottom:-.31rem; inset-inline-start:-.29rem; inline-size:.6rem; color:var(--g-300)}
   .jarr svg{inline-size:.55em; block-size:.55em; color:var(--g-500)}
 
   .vg{aspect-ratio:16/10.5; background:var(--white); border:1px solid var(--g-200); border-radius:9px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 3px rgb(13 61 38 / .07)}
@@ -259,6 +267,14 @@
   .stpill{flex:1; height:100%; min-height:8px; border-radius:99px; background:var(--g-100); border:1px solid var(--g-200)}
   .stpill.g{background:var(--sa-100); border-color:var(--sa-300)}
   .stpill.gd{background:var(--sa-600); border-color:var(--sa-600)}
+  .gscale{flex:1; display:flex; flex-direction:column; justify-content:center; gap:9%; min-height:0}
+  .gscale .vrow{flex:0 0 17%; min-height:9px; gap:6%}
+  .gpill{flex:0 0 32%; block-size:72%; min-height:8px; border-radius:99px;
+       border:1.5px solid var(--g-300); background:var(--white)}
+  .gpill.g4{background:var(--g-800); border-color:var(--g-800)}
+  .gpill.g3{background:linear-gradient(to left, var(--g-800) 0 50%, var(--white) 50% 100%); border-color:var(--g-800)}
+  .gpill.g2{background:var(--white); border-color:var(--g-500)}
+  .gpill.g1{background:var(--g-50); border-style:dashed; border-color:var(--g-300)}
   .field{flex:0 0 20%; min-height:10px; border:1.5px solid var(--g-300); border-radius:99px; display:flex; align-items:center; padding-inline:6%}
   .btnv{flex:0 0 18%; min-height:9px; width:38%; background:var(--sa-600); border-radius:99px}
   .doc{flex:1; background:var(--white); border:1px solid var(--g-200); border-radius:5px; padding:9%; display:flex; flex-direction:column; gap:10%; min-height:0}
@@ -462,6 +478,9 @@
     .strip{flex-wrap:wrap; gap:.6rem}
     .frame{flex:0 0 calc(50% - .3rem)}
     .jarr{display:none}
+    .cyc{block-size:auto; border:0; margin:0 0 .2rem}
+    .cyc .lbl{position:static; transform:none; margin-inline:auto; justify-content:center; background:none}
+    .cyc .end{display:none}
     .rail{flex-direction:column}
   }
   @media print{
@@ -586,31 +605,34 @@
     <p class="lead num">عبر «المعايير الأساسية للتحول الرقمي» — 89 معيارًا في الإصدار الخامس — بدورة سنوية على نظام «قياس»:</p>
   </header>
   <div class="grow" style="gap:clamp(.55rem,1.8vh,1rem)">
-    <div class="strip reveal" style="margin-top:0">
+    <div class="reveal" style="margin-top:0">
+    <div class="cyc"><span class="lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2"/><path d="M18.5 3v3.2h-3.2"/><path d="M21 12a9 9 0 0 1-15.5 6.2"/><path d="M5.5 21v-3.2h3.2"/></svg>وتتكرر مرة واحدة كل سنة</span><span class="end"><svg viewBox="0 0 10 10" aria-hidden="true"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg></span></div>
+    <div class="strip" style="margin-top:0">
       <div class="frame">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill" style="background:var(--g-300); border-color:var(--g-300)"></span><span class="stpill"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill" style="background:var(--g-300); border-color:var(--g-300)"></span><span class="stpill"></span><span class="stpill"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
         <div class="cap"><span class="n" style="background:var(--g-700)">1</span><div><b>فتح دورة القياس السنوية</b><span>على نظام «قياس» — وفق مراحل محددة معلنة</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:72%"></div><div class="ln" style="width:56%"></div><div class="ln lt" style="width:64%; margin-top:auto"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:72%"></div><div class="ln" style="width:56%"></div><div class="ln lt" style="width:64%; margin-top:auto"></div></div></div></div>
         <div class="cap"><span class="n" style="background:var(--g-700)">2</span><div><b>تقديم الإجابات وإرفاق الأدلة</b><span>مستندات تُرفَع ضمن نافذة زمنية محددة لصلاحيتها</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:50%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vdot" style="background:var(--g-500)"></span><div class="ln" style="width:50%"></div></div></div></div>
         <div class="cap"><span class="n" style="background:var(--g-700)">3</span><div><b>المراجعة والتحقق</b><span>تدقيق الإجابات والأدلة على مستوى المتطلبات</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="vrow" style="justify-content:center; gap:6%"><span class="stpill" style="flex:0 0 26%; min-height:9px; background:var(--g-700); border-color:var(--g-700)"></span><span class="stpill" style="flex:0 0 26%; min-height:9px; background:var(--g-300); border-color:var(--g-300)"></span><span class="stpill" style="flex:0 0 26%; min-height:9px"></span></div><div class="ln" style="width:62%; align-self:center"></div></div></div>
-        <div class="cap"><span class="n" style="background:var(--g-700)">4</span><div><b>التقدير لكل معيار</b><span>التزام كلي / جزئي / عدم الالتزام — و«لا ينطبق» بضوابطها</span></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="gscale"><div class="vrow"><span class="gpill g4"></span><div class="ln" style="width:40%"></div></div><div class="vrow"><span class="gpill g3"></span><div class="ln" style="width:33%"></div></div><div class="vrow"><span class="gpill g2"></span><div class="ln" style="width:27%"></div></div><div class="vrow"><span class="gpill g1"></span><div class="ln" style="width:21%"></div></div></div></div></div>
+        <div class="cap"><span class="n" style="background:var(--g-700)">4</span><div><b>التقدير لكل معيار</b><span>أربعة تقديرات: التزام كلي · جزئي · عدم الالتزام · «لا ينطبق» بضوابطها</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck" style="background:var(--g-700)">✓</span><div class="ln" style="width:34%"></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck" style="background:var(--g-700)">✓</span><div class="ln" style="width:34%"></div></div></div></div></div>
         <div class="cap"><span class="n" style="background:var(--g-700)">5</span><div><b>النتائج والتقارير</b><span>مع نافذة اعتراض محددة ضمن الدورة</span></div></div>
       </div>
+    </div>
     </div>
     <div class="payoff reveal" style="margin-top:0; background:var(--sa-50); color:var(--sa-900); border:1px solid var(--sa-200); text-align:right"><b style="color:var(--sa-800)">الاستثناء الوحيد — وهو المفتاح:</b>&nbsp; منظور «كفاءة المواقع وجودة المحتوى الرقمي» هو الوحيد الذي — بنص الإصدار الخامس — <b style="color:var(--sa-800)">«لا يتطلب إرفاق مستند إثبات، ويتم متابعة التزام الجهات الحكومية مباشرةً من هيئة الحكومة الرقمية»</b>. ومتابعةٌ مباشرة من الموقع نفسه هي أقرب موطئ قدم رسمي للقياس الآلي… وهنا يبدأ دورنا.</div>
     <p class="reveal" style="color:var(--g-500); font-size:clamp(.64rem,1.6vh,.84rem)">وتكتمل الصورة بأداتين رسميتين أخريين: مؤشر نضج التجربة الرقمية DXMI، ومؤشر كفاءة المواقع الإلكترونية والمحتوى الرقمي — لكل منهما نطاقه ومنهجيته.</p>
@@ -657,11 +679,11 @@
         <span class="big num">89</span><span>معيارًا — الإصدار الخامس V5.0<br>كما نشرته الهيئة حرفيًا</span>
         <div class="esub num">215 صفحة رسمية منشورة قُرئت صفحةً صفحة</div>
       </div>
-      <span class="earr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="earr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="ecore"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><b>مُطابق</b>
         <div class="ecorelist">فحص آلي بمتصفح حقيقي<br>قواعد مُسندة لمعيارها<br>استبيان وأدلة لما لا يُقاس آليًا</div>
       </div>
-      <span class="earr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="earr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="eouts">
         <p class="elabel">الأثر — ما الذي يتغيّر عندكم</p>
         <div class="eout">تعرفون فجوتكم قبل الدورة، لا بعد نتيجتها</div>
@@ -716,27 +738,27 @@
     <div class="imap reveal">
       <div class="irow">
         <div class="iq"><span class="src">V5.0 + دليل الكفاءة</span><p class="num">الهيئة تقيس آليًا منظورًا واحدًا فقط: «كفاءة المواقع وجودة المحتوى الرقمي»</p></div>
-        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <span class="iarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
         <div class="idec num">فركّز المحرك هناك أولًا — لا لنكرر قياسكم بل لنكمله: تقاريركم الدورية تعطي الهيئة النتيجة، ومُطابق يعطي الجهة الموضع والسبب والإصلاح. قواعد فحص على معاييره الأربعة كاملة (4/4) — و17 معيارًا إجمالًا حيث تصدق الآلة</div>
       </div>
       <div class="irow">
         <div class="iq"><span class="src">V5.0 — كل الصفحات الـ155</span><p>لا توجد أوزان منشورة إطلاقًا — والتقدير الرسمي على مستوى المعيار: كلي / جزئي / عدم الالتزام</p></div>
-        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <span class="iarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
         <div class="idec">فلا يخترع النظام أوزانًا: منهجية الهيئة هي المرجع، وكل مؤشر تجميعي مُوسَم «تشخيصيًا»</div>
       </div>
       <div class="irow">
         <div class="iq"><span class="src">V5.0 + تصنيف الكتالوج</span><p class="num">أغلب الإطار طبيعته مستندية — 62 معيارًا بتصنيف الكتالوج تُثبَت بالوثائق والأدلة، لا بالفحص</p></div>
-        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <span class="iarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
         <div class="idec">فبُني مساران لا يختلطان أبدًا: قياس آلي حيث يمكن، وأدلة منظمة حيث يجب</div>
       </div>
       <div class="irow">
         <div class="iq"><span class="src">الوثائق الثلاث معًا</span><p>ثلاث أدوات رسمية منفصلة — لكل منها نطاقها ومنهجيتها، ورقم الوثيقة لا يحدد هويتها</p></div>
-        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <span class="iarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
         <div class="idec">فلا يخلط النظام بينها: كتالوج المعايير شيء، وDXMI شيء، والكفاءة شيء — بحدود صريحة</div>
       </div>
       <div class="irow">
         <div class="iq"><span class="src">الإصداران V4.0 وV5.0</span><p>المنهجيات نفسها تتطور بين دورة وأخرى — والوثيقة الواحدة لها أجيال</p></div>
-        <span class="iarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+        <span class="iarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
         <div class="idec">فالكتالوج مُدار بالإصدارات: التحديث ترقية موثقة لا تكسر تاريخ القياس</div>
       </div>
     </div>
@@ -758,15 +780,15 @@
   <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
     <div class="cards" style="grid-template-columns:repeat(3,1fr)">
       <div class="card topline tint reveal" data-go="11">
-        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <div class="vg" aria-hidden="true" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
         <h3>البوابة الأولى — الهيئة</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الإشراف</p><p>رؤية شاملة لالتزام الجهات، وحملات فحص، ومتابعة موثقة حتى الإغلاق.</p>
       </div>
       <div class="card topline reveal" data-go="13">
-        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="stage"><div class="scan"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <div class="vg" aria-hidden="true" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="stage"><div class="scan"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
         <h3>البوابة الثانية — الجهة الحكومية</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الجاهزية</p><p>فحص مستمر، وملاحظات قابلة للتنفيذ، وملف قياس يكتمل قبل الدورة الرسمية.</p>
       </div>
       <div class="card topline reveal" data-go="16">
-        <div class="vg" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:13%; width:26%; border-radius:99px"></div><div class="ln" style="width:70%"></div></div></div></div>
+        <div class="vg" aria-hidden="true" style="margin-bottom:.7rem"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:13%; width:26%; border-radius:99px"></div><div class="ln" style="width:70%"></div></div></div></div>
         <h3>البوابة الثالثة — التصميم</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.2rem">الوقاية</p><p>مُطابق لفيجما يفحص التصميم قبل أول سطر كود — فيمنع الملاحظة قبل أن تولد.</p>
       </div>
     </div>
@@ -789,9 +811,9 @@
       <div class="card topline" data-go="16" style="text-align:center"><h3>مُطابق لفيجما</h3><p style="font-weight:700; color:var(--sa-800); margin-top:.15rem">بوابة التصميم — الوقاية</p><p class="who">تستخدمها <b>فرق تصميم المنصات الحكومية</b> — و<b>فرق المراجعة</b> حين يُشارَك معها التصميم — لفحصه قبل أن يتحول إلى موقع أصلًا</p></div>
     </div>
     <div class="reveal" style="display:flex; justify-content:space-around; padding-inline:12%">
-      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
-      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
-      <svg style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+      <svg aria-hidden="true" style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+      <svg aria-hidden="true" style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
+      <svg aria-hidden="true" style="inline-size:.8rem; color:var(--g-500)" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="currentColor"/></svg>
     </div>
     <div class="reveal" style="background:var(--sa-900); border-radius:12px; padding:clamp(.7rem,2vh,1.2rem) clamp(.9rem,1.8vw,1.4rem)">
       <p style="color:var(--sa-300); font-weight:700; font-size:clamp(.7rem,1.75vh,.92rem); margin-bottom:.55rem">النواة المشتركة — تُبنى مرة، وتخدم الجميع</p>
@@ -885,32 +907,32 @@
   <div class="grow">
     <div class="strip">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:42%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
         <div class="cap"><span class="n">1</span><div><b>كشف المملكة</b><span class="num">صورة حية لالتزام الجهات المُفعّلة — من كتالوج مرجعي يضم 130 جهة</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:82%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:55%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:30%"></i></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:82%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:55%"></i></div></div><div class="vrow"><div class="ln" style="width:26%"></div><div class="pbar" style="flex:1"><i style="width:30%"></i></div></div></div></div>
         <div class="cap"><span class="n">2</span><div><b>حملة فحص قطاعية</b><span>عشرات الجهات في جولة واحدة — بالمعايير نفسها</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot d-r"></span><div class="ln" style="width:48%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:56%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:38%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:50%"></div><div class="ln g" style="width:16%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vdot d-r"></span><div class="ln" style="width:48%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:56%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:38%"></div><div class="ln g" style="width:16%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:50%"></div><div class="ln g" style="width:16%"></div></div></div></div>
         <div class="cap"><span class="n">3</span><div><b>نتائج مُسندة</b><span>كل ملاحظة بمعيارها ودليلها وخطورتها</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:45%"></div><div class="stage"><div class="mark" style="inset-inline-start:16%; top:24%; width:46%; height:40%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:45%"></div><div class="stage"><div class="mark" style="inset-inline-start:16%; top:24%; width:46%; height:40%"></div></div></div></div>
         <div class="cap"><span class="n">4</span><div><b>تدقيق جهة بعينها</b><span>الملاحظة بموضعها على الشاشة وحلّها أولًا</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:64%"></div><div class="ln lt" style="width:48%"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span><span class="stpill"></span></div><div class="ln" style="width:64%"></div><div class="ln lt" style="width:48%"></div></div></div>
         <div class="cap"><span class="n">5</span><div><b>إصدار ومتابعة</b><span>دورة حياة حتى التحقق — بمسار اعتراض عادل</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:76%"></div><div class="ln" style="width:60%"></div><div class="ln" style="width:68%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:32%"></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:76%"></div><div class="ln" style="width:60%"></div><div class="ln" style="width:68%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:32%"></div></div></div></div></div>
         <div class="cap"><span class="n">6</span><div><b>تقرير موثق</b><span>بالأدلة لا بالانطباعات</span></div></div>
       </div>
     </div>
@@ -953,32 +975,32 @@
   <div class="grow">
     <div class="strip">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
         <div class="cap"><span class="n">1</span><div><b>ربط النطاقات</b><span>بالرابط فقط — لا تثبيت ولا صلاحيات</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:52%"></div><div class="stage"><div class="scan"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:52%"></div><div class="stage"><div class="scan"></div></div></div></div>
         <div class="cap"><span class="n">2</span><div><b>فحص شامل</b><span>صفحةً صفحة، بمتصفح يرى ما يراه المستفيد</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%; height:8%"></div><div class="ln" style="width:72%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vdot d-o"></span><div class="ln lt" style="width:44%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%; height:8%"></div><div class="ln" style="width:72%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vdot d-o"></span><div class="ln lt" style="width:44%"></div></div></div></div>
         <div class="cap"><span class="n">3</span><div><b>ملاحظات قابلة للتنفيذ</b><span>الحل المقترح يتصدر — بالموضع والخطورة</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="kan"><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard g"></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="kan"><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard g"></div></div></div></div></div>
         <div class="cap"><span class="n">4</span><div><b>معالجة موزعة</b><span>دورة فرز كاملة من الإقرار إلى الإفادة بالمعالجة — مبنية وجاهزة للتفعيل مع أول جهة</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:88%"></div><div class="cb" style="height:62%"></div><div class="cb" style="height:40%"></div><div class="cb g" style="height:20%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:88%"></div><div class="cb" style="height:62%"></div><div class="cb" style="height:40%"></div><div class="cb g" style="height:20%"></div></div></div></div>
         <div class="cap"><span class="n">5</span><div><b>أثر مُثبت</b><span>إعادة الفحص تُظهر ما عولج فعلًا — بالأرقام</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:50%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:50%"></div></div></div></div>
         <div class="cap"><span class="n">6</span><div><b>اكتمال الملف</b><span>تقييم ذاتي وأدلة — فلا مفاجآت في دورة القياس</span></div></div>
       </div>
     </div>
@@ -1022,17 +1044,17 @@
   <div class="grow" style="gap:clamp(.6rem,1.9vh,1rem)">
     <div class="strip" style="margin-top:0; max-width:56rem; align-self:center; inline-size:100%">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="ln lt" style="width:70%"></div><div class="ln lt" style="width:62%"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:50%"></div><div class="ln lt" style="width:70%"></div><div class="ln lt" style="width:62%"></div></div></div>
         <div class="cap" style="justify-content:center"><div style="text-align:center"><b>مواقع الجهة ومنصاتها</b><span>كما هي — دون أي تعديل</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg" style="background:var(--sa-900); border-color:var(--sa-900)"><div class="tb" style="background:var(--sa-800); border-color:var(--sa-800)"><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i></div><div class="bd" style="align-items:center; justify-content:center"><svg style="inline-size:28%; border-radius:14%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div></div>
+        <div class="vg" aria-hidden="true" style="background:var(--sa-900); border-color:var(--sa-900)"><div class="tb" style="background:var(--sa-800); border-color:var(--sa-800)"><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i><i style="background:var(--sa-500)"></i></div><div class="bd" style="align-items:center; justify-content:center"><svg style="inline-size:28%; border-radius:14%" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="10" fill="#1B8354"/><path d="M12 32 L12 18 L17.5 26 L23 18 L23 32" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 24.5 L32 28.5 L38 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div></div>
         <div class="cap" style="justify-content:center"><div style="text-align:center"><b>مُطابق</b><span>فحص آلي · ملاحظات · أدلة · تقارير</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:38%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:38%"></div><div class="vgrid"><div class="cell g"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div></div></div></div>
         <div class="cap" style="justify-content:center"><div style="text-align:center"><b>واجهة الهيئة</b><span>كشف شامل · حملات · متابعة</span></div></div>
       </div>
     </div>
@@ -1072,27 +1094,27 @@
   <div class="grow">
     <div class="strip">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:14%; width:26%; border-radius:99px"></div><div class="ln" style="width:72%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:22%; width:44%"></div><div class="shp" style="height:14%; width:26%; border-radius:99px"></div><div class="ln" style="width:72%"></div></div></div></div>
         <div class="cap"><span class="n">1</span><div><b>التصميم كالمعتاد</b><span>في فيجما — دون تغيير في طريقة العمل</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:66%"></div></div><div class="panel"><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:62%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:48%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:55%"></div></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:66%"></div></div><div class="panel"><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:62%"></div></div><div class="vrow"><span class="vdot d-o"></span><div class="ln" style="width:48%"></div></div><div class="vrow"><span class="vdot d-g"></span><div class="ln" style="width:55%"></div></div></div></div></div></div>
         <div class="cap"><span class="n">2</span><div><b>فحص فوري بمُطابق لفيجما</b><span class="num">6 فئات تدقيق تعكس المعايير</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:24%; width:46%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:70%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art"><div class="shp" style="height:24%; width:46%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:70%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
         <div class="cap"><span class="n">3</span><div><b>معالجة في المصدر</b><span>التعديل في ملف التصميم — حيث يكون أرخص</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:60%"></div></div><div class="code"><div class="ln" style="width:70%"></div><div class="ln g" style="width:52%"></div><div class="ln" style="width:62%"></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:48%"></div><div class="ln" style="width:60%"></div></div><div class="code"><div class="ln" style="width:70%"></div><div class="ln g" style="width:52%"></div><div class="ln" style="width:62%"></div></div></div></div></div>
         <div class="cap"><span class="n">4</span><div><b>تسليم متوافق للتطوير</b><span>بمرجعية «كود المنصات» — أحد المعايير التي سيُقاس عليها الموقع لاحقًا</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit" style="grid-template-columns:1fr 1fr"><div class="art" style="gap:11%"><div class="shp" style="height:22%; width:52%"></div><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div><div class="stage"><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vsplit" style="grid-template-columns:1fr 1fr"><div class="art" style="gap:11%"><div class="shp" style="height:22%; width:52%"></div><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div><div class="stage"><span class="vcheck" style="position:absolute; inset-inline-end:10%; bottom:12%">✓</span></div></div></div></div>
         <div class="cap"><span class="n">5</span><div><b>المرجعية نفسها بعد الإطلاق</b><span>يفحص مُطابق الموقع لاحقًا — فلا مفاجآت</span></div></div>
       </div>
     </div>
@@ -1137,19 +1159,19 @@
   <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
     <div class="thread reveal">
       <div class="station card">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:40%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:64%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="art" style="gap:11%"><div class="shp" style="height:24%; width:40%; background:var(--sa-100); box-shadow:0 0 0 2px var(--sa-500)"></div><div class="ln" style="width:64%"></div></div></div></div>
         <span class="st-k num">المحطة 1 · في التصميم</span>
         <h3>تُمنع قبل أن تولد</h3>
         <p>يلتقطها مُطابق لفيجما في ملف التصميم — فتُعالج قبل أن تُبرمج، ولا تصل إلى الإنتاج أصلًا.</p>
       </div>
       <div class="station card">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:46%"></div><div class="stage"><div class="mark" style="inset-inline-start:20%; top:26%; width:42%; height:36%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln" style="width:46%"></div><div class="stage"><div class="mark" style="inset-inline-start:20%; top:26%; width:42%; height:36%"></div><span class="vcheck" style="position:absolute; inset-inline-end:8%; bottom:10%">✓</span></div></div></div>
         <span class="st-k num">المحطة 2 · في التشغيل</span>
         <h3>تُرصد وتُعالج ويُثبت الأثر</h3>
         <p>إن وصلت إلى الإنتاج، يرصدها الفحص بموضعها وحلّها — فتُعالج، وتُثبت إعادةُ الفحص أن المعالجة نجحت فعلًا.</p>
       </div>
       <div class="station card">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span></div><div class="vrow"><span class="vcheck">✓</span><div class="ln g" style="width:44%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 22%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill gd"></span></div><div class="vrow"><span class="vcheck">✓</span><div class="ln g" style="width:44%"></div></div></div></div>
         <span class="st-k num">المحطة 3 · في الإشراف</span>
         <h3>تُتابَع حتى الإغلاق المتحقق</h3>
         <p>تظهر للهيئة بدورة حياتها كاملة — من الرصد إلى التحقق، بمسار اعتراض عادل وسجل واحد.</p>
@@ -1213,22 +1235,22 @@
   <div class="grow">
     <div class="strip" style="max-width:64rem; align-self:center; inline-size:100%">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
         <div class="cap"><span class="n">1</span><div><b>اليوم الأول</b><span>ربط النطاقات المصرّح بها — وأول فحص شامل يبدأ فورًا</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:34%"></div></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="doc"><div class="ln" style="width:74%"></div><div class="ln" style="width:58%"></div><div class="vrow" style="margin-top:auto"><span class="vcheck">✓</span><div class="ln g" style="width:34%"></div></div></div></div></div>
         <div class="cap"><span class="n">2</span><div><b>الأسبوع الأول</b><span>خط الأساس واضح — وأول تقرير جاهزية بين يدي الجهة</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:85%"></div><div class="cb" style="height:58%"></div><div class="cb g" style="height:30%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:85%"></div><div class="cb" style="height:58%"></div><div class="cb g" style="height:30%"></div></div></div></div>
         <div class="cap"><span class="n">3</span><div><b>الشهر الأول</b><span>معالجة موزعة على الفرق — وأثر مُقاس بإعادة الفحص</span></div></div>
       </div>
-      <span class="jarr"><svg viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
+      <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:58%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:44%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:58%"></div></div></div></div>
         <div class="cap"><span class="n">4</span><div><b>مع دورة القياس</b><span>ملف مكتمل — قياسًا آليًا وأدلةً منظمة، بلا مفاجآت</span></div></div>
       </div>
     </div>
@@ -1247,19 +1269,19 @@
   <div class="grow" style="gap:clamp(.6rem,2vh,1.1rem)">
     <div class="cards" style="grid-template-columns:repeat(4,1fr)">
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:45%"></div><div class="cb g" style="height:80%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="cbars"><div class="cb" style="height:45%"></div><div class="cb g" style="height:80%"></div></div></div></div>
         <div class="cap"><span class="n">1</span><div><b>الدرجة التشخيصية قبل/بعد</b><span>قياس اليوم الأول مقابل نهاية الدورة — بالمنهجية الموسومة نفسها</span></div></div>
       </div>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:46%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:56%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:46%"></div></div><div class="vrow"><span class="vcheck">✓</span><div class="ln" style="width:52%"></div></div></div></div>
         <div class="cap"><span class="n">2</span><div><b>ملاحظات مغلقة بتحقق</b><span>ليس «قيل إنها حُلّت» — بل تحقق آلي بإعادة الفحص</span></div></div>
       </div>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:12%"><div class="stepr" style="flex:0 0 24%"><span class="stpill gd"></span><span class="stpill gd"></span><span class="stpill g"></span><span class="stpill"></span></div><div class="ln" style="width:58%"></div></div></div>
         <div class="cap"><span class="n">3</span><div><b>زمن الاكتشاف ← الإغلاق</b><span>متوسط عمر الملاحظة عبر دورة حياتها الموثقة بالطوابع الزمنية</span></div></div>
       </div>
       <div class="frame reveal">
-        <div class="vg"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%"></div><div class="vgrid"><div class="cell g"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
+        <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="ln gd" style="width:40%"></div><div class="vgrid"><div class="cell g"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div><div class="cell"></div><div class="cell g"></div></div></div></div>
         <div class="cap"><span class="n">4</span><div><b>التغطية</b><span>الصفحات والنطاقات المفحوصة، والمعايير المفعّلة قياسًا وأدلةً</span></div></div>
       </div>
     </div>
