@@ -239,6 +239,19 @@
   .shotchip.wipchip{background:var(--warn-50); border-color:var(--warn-200); color:var(--warn-700)}
   .shotchip.wipchip b{color:var(--warn-700)}
   @media (prefers-reduced-motion:reduce){.wip .wipdot,.wipbar{animation:none !important}}
+  /* the foundation strip: three security guarantees on one line, and the
+     hosting line on its own — data residency is the first question a regulator
+     asks, so it stops being one chip among five in 10px grey. */
+  .found{background:var(--g-100); border:1px solid var(--g-200); border-radius:12px;
+       padding:clamp(.5rem,1.5vh,.85rem) clamp(.9rem,1.8vw,1.4rem);
+       display:flex; flex-direction:column; align-items:center; gap:.4rem;
+       color:var(--g-700); font-weight:600}
+  .found .fline{display:flex; flex-wrap:wrap; gap:.35rem .8rem; justify-content:center;
+       font-size:clamp(.62rem,1.6vh,.84rem)}
+  .found .fdot{color:var(--g-300)}
+  .found .flab{color:var(--g-500); font-weight:700; margin-inline-end:.3rem}
+  .found .fhost{font-size:clamp(.68rem,1.75vh,.92rem); color:var(--g-800);
+       border-top:1px solid var(--g-200); padding-top:.45rem; inline-size:100%; text-align:center}
   .shothush{text-align:center; color:var(--g-500); font-size:clamp(.58rem,1.45vh,.78rem); font-weight:600; margin:0}
   /* زر العودة إلى البداية — ثابت على يمين الشاشة (اتجاه مادي مقصود بطلب المالكة) */
   #homeBtn{position:fixed; bottom:clamp(2.9rem,6.5vh,3.9rem); right:clamp(.6rem,1.5vw,1.2rem); inline-size:2.7rem; block-size:2.7rem; border-radius:50%; background:#fff; border:1.5px solid var(--sa-600); color:var(--sa-700); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:60; box-shadow:0 6px 18px rgba(13,61,38,.14); opacity:.5; padding:0; transition:opacity .2s ease, transform .2s ease, background .2s ease}
@@ -831,8 +844,9 @@
       </div>
     </div>
     <p class="reveal" style="color:var(--g-500); font-size:clamp(.6rem,1.5vh,.8rem); text-align:center; margin:0">النواة المشتركة تخدم بوابتَي الهيئة والجهة اليوم — سجل واحد ونفس الكتالوج ونفس القواعد؛ أما بوابة التصميم فتفحص «كود المنصات» داخل فيجما، وتوحيد سجلها مع السحابة على خارطة الطريق.</p>
-    <div class="reveal" style="background:var(--g-100); border:1px solid var(--g-200); border-radius:12px; padding:clamp(.5rem,1.5vh,.85rem) clamp(.9rem,1.8vw,1.4rem); display:flex; flex-wrap:wrap; gap:.4rem .9rem; justify-content:center; font-size:clamp(.62rem,1.6vh,.84rem); color:var(--g-700); font-weight:600">
-      <span>الأساس:</span><span>عزل الجهات على مستوى قاعدة البيانات (RLS)</span><span>·</span><span>سجل تدقيق مُسلسل التجزئة</span><span>·</span><span>تحقق ثنائي TOTP</span><span>·</span><span>استضافة أوروبية اليوم — ومحلية ضمن خارطة الطريق</span><span>·</span><span>عربية أولًا RTL</span>
+    <div class="found reveal">
+      <span class="fline"><span class="flab">الضمانات الأمنية:</span><span>عزل الجهات على مستوى قاعدة البيانات (RLS)</span><span class="fdot">·</span><span>سجل تدقيق مُسلسل التجزئة</span><span class="fdot">·</span><span>تحقق ثنائي TOTP</span></span>
+      <span class="fhost"><span class="flab">الاستضافة اليوم:</span> في أوروبا — وداخل المملكة على خارطة الطريق.</span>
     </div>
     <div class="payoff reveal" style="margin-top:0"><b>لماذا هذا مهم:</b>&nbsp; النواة الواحدة تعني حقيقة واحدة — أي تحسين في القياس يصل للهيئة والجهات والمصممين في اللحظة نفسها.</div>
   </div>
@@ -953,12 +967,11 @@
     <div class="accent"></div>
   </header>
   <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
-    <div class="shotframe wipshot reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 1.88))">
-      <span class="wip"><span class="wipdot" aria-hidden="true"></span>قيد الإنشاء</span><div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">تدقيق صفحة واحدة — موقع حكومي مباشر</span><span class="wipbar" aria-hidden="true"></span></div>
+    <div class="shotframe reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 1.88))">
+      <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">تدقيق صفحة واحدة — موقع حكومي مباشر</span></div>
       <img src="shots/01-page-audit.jpg" alt="شاشة الملاحظات في مُطابق: قائمة ملاحظات عربية موسومة بمعايير DGA 2026، وبطاقة تفاصيل ملاحظة آلية الإبلاغ عن الفساد مع الإصلاح المقترح">
     </div>
     <div class="shotnotes reveal">
-      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم؛ نعرض شكلها لا تفاصيلها، وبقية شاشاتها تُبنى</span>
       <span class="shotchip num"><b>44 ملاحظة</b> على صفحة واحدة — بالعربية، لكل منها شدتها ومعيارها</span>
       <span class="shotchip">المختارة: <b>آلية الإبلاغ عن الفساد</b> — الوصف، ولماذا تهم، والإصلاح المقترح جاهزًا للنسخ</span>
     </div>
