@@ -220,10 +220,8 @@
   .shotchip b{color:var(--sa-800)}
   /* «قيد الإنشاء» — the entity portal is still being built. The shot itself is
      real, so the marker says which is which instead of casting doubt on it. */
-  .shotframe{position:relative}
   .shotbar{position:relative}
-  .wip{position:absolute; z-index:2; top:.5rem; inset-inline-start:.6rem;
-       display:flex; align-items:center; gap:.35rem;
+  .wip{display:flex; align-items:center; gap:.35rem; margin-inline-start:.5rem;
        background:var(--warn-50); border:1px solid var(--warn-200); color:var(--warn-700);
        border-radius:999px; padding:.2rem .62rem;
        font-size:clamp(.55rem,1.35vh,.72rem); font-weight:700; white-space:nowrap;
@@ -995,7 +993,7 @@
     <div class="strip">
       <div class="frame reveal">
         <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd" style="justify-content:center; gap:10%"><div class="field"><div class="ln g" style="width:58%"></div></div><div class="btnv"></div></div></div>
-        <div class="cap"><span class="n">1</span><div><b>ربط النطاقات</b><span>بالرابط فقط — لا تثبيت ولا صلاحيات</span></div></div>
+        <div class="cap"><span class="n">1</span><div><b>يبدأ برابط</b><span>تُدخل رابط موقعكم فيبدأ الفحص — لا تثبيت ولا صلاحيات</span></div></div>
       </div>
       <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
@@ -1010,7 +1008,7 @@
       <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
         <div class="vg" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><div class="bd"><div class="kan"><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard"></div><div class="kcard"></div></div><div class="kcol"><div class="kcard g"></div></div></div></div></div>
-        <div class="cap"><span class="n">4</span><div><b>معالجة موزعة</b><span>دورة فرز كاملة من الإقرار إلى الإفادة بالمعالجة — مبنية وجاهزة للتفعيل مع أول جهة</span></div></div>
+        <div class="cap"><span class="n">4</span><div><b>متابعة المعالجة</b><span>كل ملاحظة تُسنَد لمسؤول وتُتابَع من الإقرار إلى الإفادة بالمعالجة — مبنية وجاهزة للتفعيل مع أول جهة</span></div></div>
       </div>
       <span class="jarr"><svg aria-hidden="true" viewBox="0 0 10 10"><polygon points="10,0 0,5 10,10" fill="currentColor"/></svg></span>
       <div class="frame reveal">
@@ -1036,11 +1034,11 @@
   </header>
   <div class="grow" style="gap:clamp(.5rem,1.6vh,.9rem); max-width:74rem; align-self:center; inline-size:100%">
     <div class="shotframe wipshot reveal" style="max-inline-size:min(100%, calc((100dvh - 20rem) * 2.1))">
-      <span class="wip"><span class="wipdot" aria-hidden="true"></span>قيد الإنشاء</span><div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="addr">لوحة الجهة — نتيجة الفحص الآلي</span><span class="wipbar" aria-hidden="true"></span></div>
+      <div class="shotbar"><span class="sdot r"></span><span class="sdot y"></span><span class="sdot g"></span><span class="wip"><span class="wipdot" aria-hidden="true"></span>قيد الإنشاء</span><span class="addr">لوحة الجهة — نتيجة الفحص الآلي</span><span class="wipbar" aria-hidden="true"></span></div>
       <img src="shots/02-entity-dashboard.jpg" alt="لوحة الجهة في مُطابق: نتيجة الفحص الآلي 34 من 100 موسومة يحتاج تحسين وثقة منخفضة، والتقييم الذاتي لم يُستكمل، مع فحص رابط فوري">
     </div>
     <div class="shotnotes reveal">
-      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم؛ نعرض شكلها لا تفاصيلها، وبقية شاشاتها تُبنى</span>
+      <span class="shotchip wipchip">بوابة الجهة <b>قيد الإنشاء</b> — هذه اللقطة من نسخة تعمل اليوم؛ نعرض شكلها لا تفاصيلها</span>
       <span class="shotchip num"><b>34/100</b> — تقدير تشخيصي مُعلَن الحدود: «ثقة منخفضة» ما دام التقييم الذاتي لم يُستكمل</span>
       <span class="shotchip num">مبنية على <b>57 تدقيقًا آليًا</b> — آخرها فحص حي أُجري أثناء إعداد هذا العرض</span>
       <span class="shotchip">التقسيم الرباعي الظاهر <b>تصنيفٌ داخلي في مُطابق</b> — لا علاقة له بمنظورات مؤشر نضج التجربة الرقمية ولا يدّعي قياسها</span>
@@ -1214,7 +1212,7 @@
         <thead><tr><th style="text-align:right">البوابة</th><th>من يدخل منها</th><th>ماذا يحدث فيها</th><th>ما الذي يخرج منها</th></tr></thead>
         <tbody>
           <tr><td><b>الهيئة — الإشراف</b></td><td>فرق القياس والإشراف</td><td>كشف شامل · حملات فحص · إصدار الملاحظات ومتابعة دورتها</td><td>قرار رقابي مبني على أدلة قابلة للمراجعة</td></tr>
-          <tr><td><b>الجهة — الجاهزية</b></td><td>الخدمات الرقمية والفرق التقنية</td><td>فحص مستمر · معالجة موزعة · أثر مُقاس بإعادة الفحص · تقييم ذاتي وأدلة</td><td>ملف قياس مكتمل — ودخول الدورة الرسمية بلا مفاجآت</td></tr>
+          <tr><td><b>الجهة — الجاهزية</b></td><td>الخدمات الرقمية والفرق التقنية</td><td>فحص مستمر · متابعة المعالجة · أثر مُقاس بإعادة الفحص · تقييم ذاتي وأدلة</td><td>ملف قياس مكتمل — ودخول الدورة الرسمية بلا مفاجآت</td></tr>
           <tr><td><b>التصميم — الوقاية</b></td><td>فرق تصميم التجربة</td><td>فحص التصميم في فيجما قبل التطوير — بست فئات تدقيق</td><td>خدمات تولد متوافقة — والملاحظة تُمنع قبل أن تولد</td></tr>
         </tbody>
       </table>
