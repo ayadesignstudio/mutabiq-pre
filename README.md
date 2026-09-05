@@ -3,7 +3,7 @@
 عرض تقديمي ثابت (HTML) يشرح **مُطابق**: منصة الجاهزية والامتثال الرقمي الحكومي.
 ٢١ شريحة، عربي RTL، مبنية على ألوان نظام التصميم الحكومي «كود المنصات».
 
-**العرض مباشر:** https://ayadesignstudio.github.io/mutabiq-rehlat/
+**العرض مباشر:** https://ayadesignstudio.github.io/mutabiq-pre/
 
 ## التنقل
 
